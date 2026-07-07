@@ -1,0 +1,23 @@
+[
+  {
+    "code": "360047",
+    "label": "chlorpheniramine 0.4 MG/ML",
+    "aliases": ["chlorpheniramine", "chlorpheniramine maleate 0.4 mg/ml"]
+  },
+  {
+    "code": "1660761",
+    "label": "capsaicin 0.38 MG/ML",
+    "aliases": ["capsaicin", "capsaicin 0.38 mg/ml topical"]
+  },
+  {
+    "code": "197361",
+    "label": "omeprazole 20 MG",
+    "aliases": ["omeprazole", "omeprazol 20mg"]
+  },
+  {
+    "code": "313782",
+    "label": "salbutamol 2 MG",
+    "aliases": ["salbutamol", "albuterol 2 mg"]
+  }
+]
+

@@ -1,0 +1,28 @@
+[
+  {
+    "code": "K21.0",
+    "label": "Gastro-esophageal reflux disease with esophagitis",
+    "aliases": ["trào ngược dạ dày thực quản", "gerd", "viêm thực quản do trào ngược"]
+  },
+  {
+    "code": "K21.9",
+    "label": "Gastro-esophageal reflux disease without esophagitis",
+    "aliases": ["trào ngược dạ dày - thực quản", "trào ngược dạ dày", "gerd không viêm thực quản"]
+  },
+  {
+    "code": "J18.9",
+    "label": "Pneumonia, unspecified organism",
+    "aliases": ["viêm phổi", "phổi viêm", "nhiễm trùng phổi"]
+  },
+  {
+    "code": "J45.9",
+    "label": "Asthma, unspecified",
+    "aliases": ["hen", "hen suyễn", "suyễn"]
+  },
+  {
+    "code": "I10",
+    "label": "Essential (primary) hypertension",
+    "aliases": ["tăng huyết áp", "cao huyết áp"]
+  }
+]
+

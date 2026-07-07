@@ -1,0 +1,15 @@
+knowledge_base:
+  icd10_path: src/vtr_ai/data/icd10_sample.json
+  rxnorm_path: src/vtr_ai/data/rxnorm_sample.json
+
+matching:
+  max_candidates: 3
+  min_confidence: 0.55
+
+rules:
+  symptom_window: 80
+  assertion_window: 60
+
+output:
+  pretty: true
+
