@@ -1,0 +1,316 @@
+[
+  {
+    "text": "hen suyễn",
+    "position": [
+      84,
+      93
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "J45.9"
+    ]
+  },
+  {
+    "text": "hen suyễn",
+    "position": [
+      113,
+      122
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "J45.9"
+    ]
+  },
+  {
+    "text": "z-pack",
+    "position": [
+      192,
+      198
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "855332"
+    ]
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      246,
+      253
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ho",
+    "position": [
+      310,
+      312
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ho",
+    "position": [
+      350,
+      352
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      388,
+      395
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ho",
+    "position": [
+      500,
+      502
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      526,
+      533
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      673,
+      680
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "prednisone",
+    "position": [
+      747,
+      757
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "8640"
+    ]
+  },
+  {
+    "text": "tiêu chảy",
+    "position": [
+      845,
+      854
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "azithromycin",
+    "position": [
+      884,
+      896
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "855332"
+    ]
+  },
+  {
+    "text": "prednisone 40 mg",
+    "position": [
+      915,
+      931
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "8640"
+    ]
+  },
+  {
+    "text": "prednisone",
+    "position": [
+      1010,
+      1020
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "8640"
+    ]
+  },
+  {
+    "text": "mất ngủ",
+    "position": [
+      1197,
+      1204
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "Khó thở",
+    "position": [
+      1251,
+      1258
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "Ho",
+    "position": [
+      1303,
+      1305
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "prednisone",
+    "position": [
+      1444,
+      1454
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "8640"
+    ]
+  },
+  {
+    "text": "tiêu chảy",
+    "position": [
+      1502,
+      1511
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "azithromycin",
+    "position": [
+      1539,
+      1551
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "855332"
+    ]
+  },
+  {
+    "text": "prednisone 40 mg",
+    "position": [
+      1561,
+      1577
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "8640"
+    ]
+  },
+  {
+    "text": "Mất ngủ",
+    "position": [
+      1720,
+      1727
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "viêm phổi",
+    "position": [
+      1847,
+      1856
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": [
+      "J18.9"
+    ]
+  },
+  {
+    "text": "magnesium",
+    "position": [
+      1954,
+      1963
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "7812"
+    ]
+  },
+  {
+    "text": "30 mg of prednisone",
+    "position": [
+      1970,
+      1989
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "8640"
+    ]
+  }
+]

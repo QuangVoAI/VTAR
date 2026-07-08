@@ -1,0 +1,165 @@
+[
+  {
+    "text": "Tăng huyết áp",
+    "position": [
+      48,
+      61
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  },
+  {
+    "text": "bệnh thận mạn",
+    "position": [
+      68,
+      81
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "N18.9"
+    ]
+  },
+  {
+    "text": "bệnh tim mạch do xơ vữa động mạch",
+    "position": [
+      104,
+      137
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.2"
+    ]
+  },
+  {
+    "text": "Nhồi máu cơ tim",
+    "position": [
+      142,
+      157
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.2"
+    ]
+  },
+  {
+    "text": "rung nhĩ",
+    "position": [
+      172,
+      180
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I48.91"
+    ]
+  },
+  {
+    "text": "metoprolol",
+    "position": [
+      354,
+      364
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "6916"
+    ]
+  },
+  {
+    "text": "desmopressin",
+    "position": [
+      405,
+      417
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "325646"
+    ]
+  },
+  {
+    "text": "tim to",
+    "position": [
+      1570,
+      1576
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": [
+      "R93.89"
+    ]
+  },
+  {
+    "text": "tim to",
+    "position": [
+      2097,
+      2103
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": [
+      "R93.89"
+    ]
+  },
+  {
+    "text": "Nhồi máu cơ tim",
+    "position": [
+      2847,
+      2862
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "I25.2"
+    ]
+  },
+  {
+    "text": "rung nhĩ",
+    "position": [
+      2907,
+      2915
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "I48.91"
+    ]
+  },
+  {
+    "text": "Nhồi máu cơ tim",
+    "position": [
+      2941,
+      2956
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "I25.2"
+    ]
+  }
+]

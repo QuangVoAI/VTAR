@@ -1,0 +1,181 @@
+[
+  {
+    "text": "gleevec",
+    "position": [
+      99,
+      106
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "42316"
+    ]
+  },
+  {
+    "text": "Tăng huyết áp",
+    "position": [
+      113,
+      126
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  },
+  {
+    "text": "Đái tháo đường típ 2",
+    "position": [
+      170,
+      190
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9"
+    ]
+  },
+  {
+    "text": "bệnh thận mạn",
+    "position": [
+      231,
+      244
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "N18.9"
+    ]
+  },
+  {
+    "text": "gleevec",
+    "position": [
+      381,
+      388
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "42316"
+    ]
+  },
+  {
+    "text": "nôn",
+    "position": [
+      873,
+      876
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "Nôn",
+    "position": [
+      884,
+      887
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "gleevec",
+    "position": [
+      1047,
+      1054
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "42316"
+    ]
+  },
+  {
+    "text": "nôn",
+    "position": [
+      1186,
+      1189
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "Nôn",
+    "position": [
+      1197,
+      1200
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "alt",
+    "position": [
+      1399,
+      1402
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "176",
+    "position": [
+      1406,
+      1409
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ast",
+    "position": [
+      1413,
+      1416
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "287",
+    "position": [
+      1420,
+      1423
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "gleevec",
+    "position": [
+      1718,
+      1725
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical",
+      "isNegated"
+    ],
+    "candidates": [
+      "42316"
+    ]
+  }
+]

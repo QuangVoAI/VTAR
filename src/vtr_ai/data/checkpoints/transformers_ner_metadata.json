@@ -1,0 +1,14 @@
+{
+  "label_map": {
+    "B-SYMPTOM": "TRIỆU_CHỨNG",
+    "I-SYMPTOM": "TRIỆU_CHỨNG",
+    "B-DIAGNOSIS": "CHẨN_ĐOÁN",
+    "I-DIAGNOSIS": "CHẨN_ĐOÁN",
+    "B-DRUG": "THUỐC",
+    "I-DRUG": "THUỐC",
+    "B-LAB_NAME": "TÊN_XÉT_NGHIỆM",
+    "I-LAB_NAME": "TÊN_XÉT_NGHIỆM",
+    "B-LAB_VALUE": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "I-LAB_VALUE": "KẾT_QUẢ_XÉT_NGHIỆM"
+  }
+}

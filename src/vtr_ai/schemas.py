@@ -54,6 +54,42 @@ class Document:
     text: str
     normalized_text: str
     norm_to_raw: list[int]
+    expanded_text: str
+    expanded_to_raw: list[int]
+    sections: list["SectionContext"] = field(default_factory=list)
+    clauses: list["ClauseContext"] = field(default_factory=list)
+    anchors: list["AnchorNode"] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class SectionContext:
+    start: int
+    end: int
+    header: str
+    kind: str
+    default_assertions: list[str] = field(default_factory=list)
+    expected_types: list[str] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class ClauseContext:
+    start: int
+    end: int
+    text: str
+    section_kind: str
+    default_assertions: list[str] = field(default_factory=list)
+    expected_types: list[str] = field(default_factory=list)
+    anchor_text: str = ""
+    anchor_kind: str = "general"
+
+
+@dataclass(slots=True)
+class AnchorNode:
+    start: int
+    end: int
+    text: str
+    kind: str
+    expected_types: list[str] = field(default_factory=list)
 
 
 @dataclass(slots=True)

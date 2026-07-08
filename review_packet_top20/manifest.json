@@ -1,0 +1,265 @@
+{
+  "count": 20,
+  "files": [
+    {
+      "file_name": "73.txt",
+      "entities": 18,
+      "unmatched_candidates": 0,
+      "assertion_count": 18,
+      "type_diversity": 3,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 8,
+        "THUỐC": 8,
+        "TRIỆU_CHỨNG": 2
+      },
+      "score": 40.8
+    },
+    {
+      "file_name": "40.txt",
+      "entities": 30,
+      "unmatched_candidates": 0,
+      "assertion_count": 14,
+      "type_diversity": 3,
+      "type_counts": {
+        "TRIỆU_CHỨNG": 20,
+        "CHẨN_ĐOÁN": 5,
+        "THUỐC": 5
+      },
+      "score": 34.0
+    },
+    {
+      "file_name": "50.txt",
+      "entities": 25,
+      "unmatched_candidates": 0,
+      "assertion_count": 14,
+      "type_diversity": 3,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 3,
+        "THUỐC": 10,
+        "TRIỆU_CHỨNG": 12
+      },
+      "score": 33.5
+    },
+    {
+      "file_name": "41.txt",
+      "entities": 37,
+      "unmatched_candidates": 0,
+      "assertion_count": 12,
+      "type_diversity": 3,
+      "type_counts": {
+        "TRIỆU_CHỨNG": 28,
+        "CHẨN_ĐOÁN": 2,
+        "THUỐC": 7
+      },
+      "score": 30.7
+    },
+    {
+      "file_name": "32.txt",
+      "entities": 22,
+      "unmatched_candidates": 0,
+      "assertion_count": 12,
+      "type_diversity": 3,
+      "type_counts": {
+        "TRIỆU_CHỨNG": 14,
+        "CHẨN_ĐOÁN": 7,
+        "THUỐC": 1
+      },
+      "score": 29.2
+    },
+    {
+      "file_name": "16.txt",
+      "entities": 31,
+      "unmatched_candidates": 0,
+      "assertion_count": 12,
+      "type_diversity": 2,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 8,
+        "TRIỆU_CHỨNG": 23
+      },
+      "score": 29.1
+    },
+    {
+      "file_name": "27.txt",
+      "entities": 15,
+      "unmatched_candidates": 0,
+      "assertion_count": 11,
+      "type_diversity": 3,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 1,
+        "THUỐC": 5,
+        "TRIỆU_CHỨNG": 9
+      },
+      "score": 26.5
+    },
+    {
+      "file_name": "33.txt",
+      "entities": 18,
+      "unmatched_candidates": 0,
+      "assertion_count": 10,
+      "type_diversity": 3,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 2,
+        "THUỐC": 6,
+        "TRIỆU_CHỨNG": 10
+      },
+      "score": 24.8
+    },
+    {
+      "file_name": "70.txt",
+      "entities": 22,
+      "unmatched_candidates": 0,
+      "assertion_count": 9,
+      "type_diversity": 4,
+      "type_counts": {
+        "THUỐC": 3,
+        "TRIỆU_CHỨNG": 11,
+        "TÊN_XÉT_NGHIỆM": 4,
+        "KẾT_QUẢ_XÉT_NGHIỆM": 4
+      },
+      "score": 24.2
+    },
+    {
+      "file_name": "20.txt",
+      "entities": 12,
+      "unmatched_candidates": 0,
+      "assertion_count": 9,
+      "type_diversity": 2,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 10,
+        "THUỐC": 2
+      },
+      "score": 21.2
+    },
+    {
+      "file_name": "94.txt",
+      "entities": 10,
+      "unmatched_candidates": 0,
+      "assertion_count": 9,
+      "type_diversity": 1,
+      "type_counts": {
+        "TRIỆU_CHỨNG": 10
+      },
+      "score": 20.0
+    },
+    {
+      "file_name": "47.txt",
+      "entities": 9,
+      "unmatched_candidates": 0,
+      "assertion_count": 9,
+      "type_diversity": 1,
+      "type_counts": {
+        "TRIỆU_CHỨNG": 9
+      },
+      "score": 19.9
+    },
+    {
+      "file_name": "35.txt",
+      "entities": 15,
+      "unmatched_candidates": 0,
+      "assertion_count": 8,
+      "type_diversity": 5,
+      "type_counts": {
+        "THUỐC": 4,
+        "CHẨN_ĐOÁN": 3,
+        "TRIỆU_CHỨNG": 4,
+        "TÊN_XÉT_NGHIỆM": 2,
+        "KẾT_QUẢ_XÉT_NGHIỆM": 2
+      },
+      "score": 22.5
+    },
+    {
+      "file_name": "74.txt",
+      "entities": 13,
+      "unmatched_candidates": 0,
+      "assertion_count": 8,
+      "type_diversity": 4,
+      "type_counts": {
+        "THUỐC": 5,
+        "TRIỆU_CHỨNG": 6,
+        "TÊN_XÉT_NGHIỆM": 1,
+        "KẾT_QUẢ_XÉT_NGHIỆM": 1
+      },
+      "score": 21.3
+    },
+    {
+      "file_name": "1.txt",
+      "entities": 31,
+      "unmatched_candidates": 0,
+      "assertion_count": 8,
+      "type_diversity": 3,
+      "type_counts": {
+        "THUỐC": 5,
+        "TRIỆU_CHỨNG": 22,
+        "CHẨN_ĐOÁN": 4
+      },
+      "score": 22.1
+    },
+    {
+      "file_name": "3.txt",
+      "entities": 29,
+      "unmatched_candidates": 0,
+      "assertion_count": 8,
+      "type_diversity": 3,
+      "type_counts": {
+        "TRIỆU_CHỨNG": 18,
+        "CHẨN_ĐOÁN": 9,
+        "TÊN_XÉT_NGHIỆM": 2
+      },
+      "score": 21.9
+    },
+    {
+      "file_name": "44.txt",
+      "entities": 20,
+      "unmatched_candidates": 0,
+      "assertion_count": 8,
+      "type_diversity": 3,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 3,
+        "TRIỆU_CHỨNG": 13,
+        "THUỐC": 4
+      },
+      "score": 21.0
+    },
+    {
+      "file_name": "54.txt",
+      "entities": 23,
+      "unmatched_candidates": 0,
+      "assertion_count": 7,
+      "type_diversity": 4,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 7,
+        "THUỐC": 6,
+        "TÊN_XÉT_NGHIỆM": 6,
+        "KẾT_QUẢ_XÉT_NGHIỆM": 4
+      },
+      "score": 20.3
+    },
+    {
+      "file_name": "5.txt",
+      "entities": 17,
+      "unmatched_candidates": 0,
+      "assertion_count": 7,
+      "type_diversity": 4,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 3,
+        "TRIỆU_CHỨNG": 8,
+        "TÊN_XÉT_NGHIỆM": 3,
+        "KẾT_QUẢ_XÉT_NGHIỆM": 3
+      },
+      "score": 19.7
+    },
+    {
+      "file_name": "84.txt",
+      "entities": 12,
+      "unmatched_candidates": 0,
+      "assertion_count": 7,
+      "type_diversity": 3,
+      "type_counts": {
+        "CHẨN_ĐOÁN": 5,
+        "TRIỆU_CHỨNG": 6,
+        "THUỐC": 1
+      },
+      "score": 18.2
+    }
+  ]
+}

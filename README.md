@@ -15,17 +15,373 @@ pip install -e .
 run_infer --input_dir test/input --output_dir test/output --config config.yaml
 ```
 
+## Tự động hoá end-to-end
+
+Để chạy từ đầu đến cuối theo đúng định dạng nộp Viettel:
+
+```bash
+PYTHONPATH=src python package_submission.py \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --zip_path /Users/springwang/Documents/VTR/output.zip \
+  --config config.yaml
+```
+
+Hoặc sau khi cài editable:
+
+```bash
+run_submit \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --zip_path /Users/springwang/Documents/VTR/output.zip \
+  --config config.yaml
+```
+
+Luồng này sẽ:
+
+- xóa `output/` cũ nếu có
+- chạy inference cho toàn bộ `*.txt`
+- kiểm tra số lượng file, schema JSON, offset `position`, và ràng buộc `assertions/candidates`
+- nén thành `output.zip` với cấu trúc `output/*.json`
+
 ## Thành phần hiện có
 
 - Tiền xử lý văn bản và ánh xạ offset normalized -> raw
 - Rule-based entity extraction cho 5 nhãn bắt buộc
+- Tầng mở rộng viết tắt y khoa tiếng Việt trước NER
+- Interface backend cho `rule`, `model`, `hybrid` NER
+- Loader checkpoint/runtime cho NER ở `model_ner.py`
 - Candidate mapping ICD-10/RxNorm bằng exact + fuzzy scoring
 - Assertion detection cho `isNegated`, `isFamily`, `isHistorical`
+- Validation output theo format nộp Viettel
+- Packaging tự động thành `output.zip`
 - Hậu xử lý span và xuất JSON theo format đề bài
 - Bộ test smoke/unit cho các case chính
 
 ## Ghi chú
 
 - Baseline này chưa gắn mô hình fine-tuned. Các hook mở rộng đã được chừa sẵn trong pipeline để thay thế bộ nhận diện rule-based bằng model/reranker ở bước sau.
+- `model` hiện hỗ trợ 2 provider:
+  - `lexical`: runtime nhẹ, nạp từ checkpoint JSON local
+  - `transformers`: loader cho local Hugging Face token-classification checkpoint
+- `transformers` có metadata label map riêng ở `transformers_ner_metadata.json` để map nhãn checkpoint về đúng 5 nhãn của bài Viettel.
+- Nếu `metadata_path` không khai báo, runtime sẽ tự tìm `transformers_ner_metadata.json` trong thư mục checkpoint.
+- Khi đã có model thật, chỉ cần đổi `ner.provider`, `ner.checkpoint_path`, và giữ nguyên pipeline còn lại.
+- `hybrid` sẽ tự fallback về rules nếu model backend không load được và `fallback_to_rules: true`.
 - `position` được lưu nội bộ theo quy ước `[start, end)` và xuất ra JSON theo cùng quy ước đó để đảm bảo `text == raw_text[start:end]`.
 
+## Huấn luyện NER
+
+Format dữ liệu train mẫu:
+
+```json
+{"text":"Bệnh nhân có tiền sử THA và rung nhĩ.","entities":[{"position":[21,24],"type":"CHẨN_ĐOÁN"},{"position":[29,37],"type":"CHẨN_ĐOÁN"}]}
+```
+
+Mỗi dòng là một JSON object trong file `.jsonl`. Ví dụ mẫu có ở:
+
+- [ner_train_sample.jsonl](/Users/springwang/Documents/VTR/src/vtr_ai/data/examples/ner_train_sample.jsonl)
+
+Huấn luyện token-classification checkpoint:
+
+```bash
+train_ner \
+  --train_jsonl /Users/springwang/Documents/VTR/src/vtr_ai/data/examples/ner_train_sample.jsonl \
+  --model_name vinai/phobert-base-v2 \
+  --output_dir /Users/springwang/Documents/VTR/artifacts/ner-phobert \
+  --num_train_epochs 3
+```
+
+Nếu chưa có dev set riêng, có thể tách trực tiếp từ train:
+
+```bash
+train_ner \
+  --train_jsonl /Users/springwang/Documents/VTR/src/vtr_ai/data/examples/ner_train_sample.jsonl \
+  --model_name vinai/phobert-base-v2 \
+  --output_dir /Users/springwang/Documents/VTR/artifacts/ner-phobert \
+  --validation_ratio 0.2 \
+  --seed 42
+```
+
+Nếu đã có dev set riêng:
+
+```bash
+train_ner \
+  --train_jsonl /Users/springwang/Documents/VTR/data/ner_train.jsonl \
+  --eval_jsonl /Users/springwang/Documents/VTR/data/ner_dev.jsonl \
+  --model_name vinai/phobert-base-v2 \
+  --output_dir /Users/springwang/Documents/VTR/artifacts/ner-phobert
+```
+
+Khi có tập eval, script sẽ evaluate theo từng epoch và lưu `eval_metrics.json` trong thư mục checkpoint.
+
+Sau khi train xong, cấu hình:
+
+```yaml
+ner:
+  backend: model
+  provider: transformers
+  checkpoint_path: /Users/springwang/Documents/VTR/artifacts/ner-phobert
+  metadata_path: /Users/springwang/Documents/VTR/artifacts/ner-phobert/transformers_ner_metadata.json
+```
+
+Suy luận NER riêng lẻ:
+
+```bash
+infer_ner --text "Bệnh nhân khó thở và dùng aspirin 325mg." --config config.yaml
+```
+
+## Build KB Chuẩn ICD-10 / RxNorm
+
+CLI dựng knowledge base chuẩn:
+
+```bash
+build_standard_kb \
+  --icd10_zip /path/to/icd10cm-Code\ Descriptions-2026.zip \
+  --icd10_seed_aliases /Users/springwang/Documents/VTR/src/vtr_ai/data/icd10_sample.json \
+  --icd10_output /Users/springwang/Documents/VTR/src/vtr_ai/data/icd10_standard.json
+```
+
+Nếu có sẵn gói RxNorm Prescribable chính thức:
+
+```bash
+build_standard_kb \
+  --rxnorm_zip /path/to/RxNorm_full_prescribe_current.zip \
+  --rxnorm_seed_aliases /Users/springwang/Documents/VTR/src/vtr_ai/data/rxnorm_sample.json \
+  --rxnorm_output /Users/springwang/Documents/VTR/src/vtr_ai/data/rxnorm_standard.json
+```
+
+Nguồn chính thống dùng để build:
+
+- ICD-10-CM code descriptions từ CDC/NCHS
+- RxNorm Prescribable release từ NLM
+
+Builder sẽ:
+
+- parse release zip chính thức
+- chuẩn hoá format code
+- merge thêm alias seed tiếng Việt hiện có theo `code`
+- xuất về đúng schema JSON mà pipeline đang dùng
+
+Kiểm tra nhanh checkpoint/runtime trước khi chạy full pipeline:
+
+```bash
+check_ner_runtime \
+  --config /Users/springwang/Documents/VTR/config.yaml \
+  --text "Bệnh nhân khó thở và rung nhĩ."
+```
+
+Lệnh này hữu ích để xác nhận:
+
+- checkpoint có tồn tại và đủ file bắt buộc hay không
+- runtime thực tế đang load class nào
+- metadata label map có được dò đúng từ checkpoint không
+- prediction smoke-test có ra đúng 5 nhãn chuẩn hoá hay không
+
+## Đánh giá offline
+
+Khi đã có thư mục nhãn chuẩn `gold_dir` theo đúng format Viettel (`*.json` song song với `input/*.txt`), có thể đo nhanh các chỉ số chính:
+
+```bash
+eval_outputs \
+  --input_dir /Users/springwang/Downloads/input \
+  --pred_dir /Users/springwang/Documents/VTR/output \
+  --gold_dir /Users/springwang/Documents/VTR/gold
+```
+
+CLI này hiện trả về JSON summary cho:
+
+- `entity_span`: đúng span
+- `entity_span_type`: đúng span + type
+- `entity_record`: đúng full record gồm text, span, type, assertions, candidates
+- `assertions`: micro-F1 trên từng nhãn `isNegated/isFamily/isHistorical`
+- `candidates`: micro-F1 trên từng mã ICD-10/RxNorm gắn vào đúng thực thể
+
+## Phân tích lỗi chưa map mã
+
+Khi cần soi các thực thể `CHẨN_ĐOÁN` hoặc `THUỐC` còn `candidates: []`, có thể dùng:
+
+```bash
+analyze_outputs \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --entity_type CHẨN_ĐOÁN \
+  --limit 20 \
+  --output_path /Users/springwang/Documents/VTR/reports/unmatched_diagnosis.json
+```
+
+Report sẽ chứa:
+
+- `file_name`
+- `text`
+- `position`
+- `assertions`
+- `context` lấy trực tiếp từ raw text quanh thực thể
+
+Workflow này hữu ích để rà nhanh các case còn mơ hồ trước khi quyết định:
+
+- thêm alias vào KB
+- sửa rule extractor
+- hoặc chủ động giữ `candidates: []` để bảo toàn precision
+
+## Audit Sau Mỗi Lần Chạy Full Input
+
+Để validate output và sinh luôn các report audit trong một lệnh:
+
+```bash
+audit_outputs \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --report_dir /Users/springwang/Documents/VTR/reports
+```
+
+Lệnh này sẽ tạo:
+
+- `summary.json`: số file và số entity theo từng type
+- `unmatched_diagnosis.json`: các `CHẨN_ĐOÁN` chưa map mã
+- `unmatched_drugs.json`: các `THUỐC` chưa map mã
+
+## Workflow Một Lệnh
+
+Để chạy toàn bộ luồng `infer -> validate -> zip -> audit` trong một lệnh:
+
+```bash
+run_workflow \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --zip_path /Users/springwang/Documents/VTR/output.zip \
+  --report_dir /Users/springwang/Documents/VTR/reports \
+  --config /Users/springwang/Documents/VTR/config.yaml
+```
+
+## Bootstrap Dev Set Từ Output Hiện Tại
+
+Khi muốn lấy prediction hiện tại làm điểm khởi đầu để chỉnh tay thành dev/gold set:
+
+```bash
+bootstrap_annotations \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --output_path /Users/springwang/Documents/VTR/reports/bootstrap_annotations.jsonl
+```
+
+Nếu muốn reviewer sửa trực tiếp trên trường đích `gold_entities` nhưng vẫn giữ `predicted_entities` để đối chiếu:
+
+```bash
+bootstrap_annotations \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --output_path /Users/springwang/Documents/VTR/reports/bootstrap_annotations.jsonl \
+  --seed_gold_entities
+```
+
+Trước khi convert review JSONL sang `gold_dir` hoặc `train_jsonl`, có thể kiểm tra nhanh offset/schema:
+
+```bash
+validate_review_jsonl \
+  --review_jsonl /Users/springwang/Documents/VTR/reports/dev_subset.jsonl
+```
+
+Mỗi dòng JSONL sẽ gồm:
+
+- `file_name`
+- `text`
+- `predicted_entities`
+
+Workflow này phù hợp để:
+
+- mở trong editor và sửa tay dần
+- chuyển thành tập `gold_dir` nhỏ
+- hoặc convert tiếp sang format train cho NER/assertion model
+
+Sau khi sửa tay file JSONL, có thể convert lại thành `gold_dir` để dùng cho `eval_outputs`:
+
+```bash
+review_to_gold \
+  --review_jsonl /Users/springwang/Documents/VTR/reports/bootstrap_annotations.jsonl \
+  --output_dir /Users/springwang/Documents/VTR/gold
+```
+
+Tool này ưu tiên đọc `gold_entities` nếu anh thêm field đó khi review; nếu không có thì nó dùng `predicted_entities`.
+
+Khi đã có `gold_dir`, có thể convert sang JSONL để huấn luyện NER:
+
+```bash
+gold_to_ner_jsonl \
+  --input_dir /Users/springwang/Downloads/input \
+  --gold_dir /Users/springwang/Documents/VTR/gold \
+  --output_path /Users/springwang/Documents/VTR/reports/ner_train_from_gold.jsonl
+```
+
+File JSONL này dùng trực tiếp cho `train_ner`.
+
+Nếu muốn đi thẳng từ review JSONL sang cả `gold_dir` và `train_jsonl` trong một lệnh:
+
+```bash
+review_to_train \
+  --review_jsonl /Users/springwang/Documents/VTR/reports/dev_subset.jsonl \
+  --input_dir /Users/springwang/Downloads/input \
+  --gold_dir /Users/springwang/Documents/VTR/gold \
+  --ner_output_path /Users/springwang/Documents/VTR/reports/ner_train_from_review.jsonl
+```
+
+## Chọn Tập File Ưu Tiên Review
+
+Nếu chưa muốn sửa tay cả 100 file, có thể chọn trước một tập dev subset giàu lỗi/giàu tín hiệu:
+
+```bash
+review_subset \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --output_path /Users/springwang/Documents/VTR/reports/review_priority.json \
+  --limit 20
+```
+
+Danh sách này ưu tiên các file có:
+
+- nhiều `candidates: []`
+- nhiều assertion
+- độ đa dạng type cao
+
+Để cắt ngay một review subset JSONL từ danh sách ưu tiên đó:
+
+```bash
+select_review_subset \
+  --bootstrap_jsonl /Users/springwang/Documents/VTR/reports/bootstrap_annotations.jsonl \
+  --priority_json /Users/springwang/Documents/VTR/reports/review_priority.json \
+  --output_path /Users/springwang/Documents/VTR/reports/dev_subset.jsonl \
+  --limit 20
+```
+
+Hoặc dùng luôn workflow gộp cho dev subset:
+
+```bash
+prepare_dev_subset \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --report_dir /Users/springwang/Documents/VTR/reports \
+  --limit 20
+```
+
+Lệnh này sẽ sinh cùng lúc:
+
+- `bootstrap_seeded.jsonl`
+- `review_priority.json`
+- `dev_subset.jsonl`
+
+Nếu muốn gom riêng các file cần review vào một thư mục gọn:
+
+```bash
+review_packet \
+  --input_dir /Users/springwang/Downloads/input \
+  --output_dir /Users/springwang/Documents/VTR/output \
+  --review_jsonl /Users/springwang/Documents/VTR/reports/dev_subset.jsonl \
+  --packet_dir /Users/springwang/Documents/VTR/review_packet
+```
+
+Packet này sẽ chứa:
+
+- `*.txt` gốc của subset
+- `*.json` output hiện tại tương ứng
+- `review_subset.jsonl`
+- `manifest.json`

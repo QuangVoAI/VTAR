@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from .abbreviation import AbbreviationExpander
+from .section_parser import extract_structure
 from .schemas import Document
 
 
@@ -43,6 +45,21 @@ def normalize_with_mapping(text: str) -> tuple[str, list[int]]:
     return normalized, norm_to_raw
 
 
-def build_document(text: str) -> Document:
+def build_document(text: str, expander: AbbreviationExpander | None = None) -> Document:
     normalized_text, norm_to_raw = normalize_with_mapping(text)
-    return Document(text=text, normalized_text=normalized_text, norm_to_raw=norm_to_raw)
+    if expander is not None:
+        expanded_text, expanded_to_raw = expander.expand_text_with_mapping(text)
+    else:
+        expanded_text = text
+        expanded_to_raw = list(range(len(text)))
+    sections, clauses, anchors = extract_structure(text)
+    return Document(
+        text=text,
+        normalized_text=normalized_text,
+        norm_to_raw=norm_to_raw,
+        expanded_text=expanded_text,
+        expanded_to_raw=expanded_to_raw,
+        sections=sections,
+        clauses=clauses,
+        anchors=anchors,
+    )

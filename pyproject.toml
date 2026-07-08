@@ -13,10 +13,27 @@ dependencies = []
 
 [project.scripts]
 run_infer = "vtr_ai.cli:main"
+run_submit = "vtr_ai.submission:main"
+train_ner = "vtr_ai.train_ner:main"
+infer_ner = "vtr_ai.infer_ner:main"
+check_ner_runtime = "vtr_ai.check_ner_runtime:main"
+eval_outputs = "vtr_ai.evaluation:main"
+analyze_outputs = "vtr_ai.analysis_report:main"
+audit_outputs = "vtr_ai.audit_report:main"
+run_workflow = "vtr_ai.workflow:main"
+bootstrap_annotations = "vtr_ai.bootstrap_annotations:main"
+review_to_gold = "vtr_ai.review_to_gold:main"
+gold_to_ner_jsonl = "vtr_ai.gold_to_ner_jsonl:main"
+review_subset = "vtr_ai.review_subset:main"
+select_review_subset = "vtr_ai.select_review_subset:main"
+prepare_dev_subset = "vtr_ai.prepare_dev_subset:main"
+review_packet = "vtr_ai.review_packet:main"
+review_to_train = "vtr_ai.review_to_train:main"
+validate_review_jsonl = "vtr_ai.validate_review_jsonl:main"
+build_standard_kb = "vtr_ai.build_standard_kb:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

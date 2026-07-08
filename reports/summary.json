@@ -1,0 +1,10 @@
+{
+  "files": 100,
+  "entity_counts": {
+    "THUỐC": 117,
+    "TRIỆU_CHỨNG": 418,
+    "CHẨN_ĐOÁN": 186,
+    "TÊN_XÉT_NGHIỆM": 50,
+    "KẾT_QUẢ_XÉT_NGHIỆM": 36
+  }
+}

@@ -1,0 +1,272 @@
+[
+  {
+    "text": "u ác trực tràng",
+    "position": [
+      48,
+      63
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "C20"
+    ]
+  },
+  {
+    "text": "vancomycin",
+    "position": [
+      298,
+      308
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "11124"
+    ]
+  },
+  {
+    "text": "ceftazidime",
+    "position": [
+      311,
+      322
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "2193"
+    ]
+  },
+  {
+    "text": "amiodarone",
+    "position": [
+      325,
+      335
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "703"
+    ]
+  },
+  {
+    "text": "u ác trực tràng",
+    "position": [
+      504,
+      519
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "C20"
+    ]
+  },
+  {
+    "text": "viêm phổi",
+    "position": [
+      655,
+      664
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "J18.9"
+    ]
+  },
+  {
+    "text": "vancomycin",
+    "position": [
+      728,
+      738
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "11124"
+    ]
+  },
+  {
+    "text": "ceftazidime",
+    "position": [
+      776,
+      787
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "2193"
+    ]
+  },
+  {
+    "text": "rung nhĩ",
+    "position": [
+      815,
+      823
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "I48.91"
+    ]
+  },
+  {
+    "text": "amiodarone",
+    "position": [
+      950,
+      960
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "703"
+    ]
+  },
+  {
+    "text": "hct",
+    "position": [
+      1049,
+      1052
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "hct",
+    "position": [
+      1231,
+      1234
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "24.7",
+    "position": [
+      1245,
+      1249
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "viêm phổi",
+    "position": [
+      1691,
+      1700
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "J18.9"
+    ]
+  },
+  {
+    "text": "hct",
+    "position": [
+      1964,
+      1967
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "24.7",
+    "position": [
+      1978,
+      1982
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "hct",
+    "position": [
+      2556,
+      2559
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "hct",
+    "position": [
+      2589,
+      2592
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "26.1",
+    "position": [
+      2605,
+      2609
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "hct",
+    "position": [
+      2612,
+      2615
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "24.7",
+    "position": [
+      2626,
+      2630
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "viêm phổi",
+    "position": [
+      2731,
+      2740
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "J18.9"
+    ]
+  },
+  {
+    "text": "u ác trực tràng",
+    "position": [
+      2901,
+      2916
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "C20"
+    ]
+  }
+]

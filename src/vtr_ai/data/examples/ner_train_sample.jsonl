@@ -1,0 +1,2 @@
+{"text":"Bệnh nhân có tiền sử THA và rung nhĩ, hiện khó thở, dùng aspirin 325mg.","entities":[{"position":[21,24],"type":"CHẨN_ĐOÁN"},{"position":[29,37],"type":"CHẨN_ĐOÁN"},{"position":[43,50],"type":"TRIỆU_CHỨNG"},{"position":[56,69],"type":"THUỐC"}]}
+{"text":"WBC:14,43; bệnh nhân ho đờm xanh.","entities":[{"position":[0,3],"type":"TÊN_XÉT_NGHIỆM"},{"position":[4,9],"type":"KẾT_QUẢ_XÉT_NGHIỆM"},{"position":[21,32],"type":"TRIỆU_CHỨNG"}]}

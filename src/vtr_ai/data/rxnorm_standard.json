@@ -1,0 +1,256 @@
+[
+  {
+    "code": "360047",
+    "label": "chlorpheniramine 0.4 MG/ML",
+    "aliases": [
+      "chlorpheniramine",
+      "chlorpheniramine maleate 0.4 mg/ml"
+    ]
+  },
+  {
+    "code": "1660761",
+    "label": "capsaicin 0.38 MG/ML",
+    "aliases": [
+      "capsaicin",
+      "capsaicin 0.38 mg/ml topical"
+    ]
+  },
+  {
+    "code": "197361",
+    "label": "omeprazole 20 MG",
+    "aliases": [
+      "omeprazole",
+      "omeprazol 20mg"
+    ]
+  },
+  {
+    "code": "313782",
+    "label": "salbutamol 2 MG",
+    "aliases": [
+      "salbutamol",
+      "albuterol 2 mg"
+    ]
+  },
+  {
+    "code": "1191",
+    "label": "aspirin 325 MG",
+    "aliases": [
+      "aspirin",
+      "aspirin 325mg",
+      "aspirin 81mg"
+    ]
+  },
+  {
+    "code": "3640",
+    "label": "doxycycline",
+    "aliases": [
+      "doxycycline hyclate",
+      "doxycyclin"
+    ]
+  },
+  {
+    "code": "6918",
+    "label": "atenolol",
+    "aliases": [
+      "atenolol 25mg",
+      "atenolol 50mg"
+    ]
+  },
+  {
+    "code": "6916",
+    "label": "metoprolol",
+    "aliases": [
+      "metoprolol tartrate",
+      "metoprolol 25mg"
+    ]
+  },
+  {
+    "code": "3423",
+    "label": "hydromorphone",
+    "aliases": [
+      "dilaudid",
+      "hydromorphone 1mg"
+    ]
+  },
+  {
+    "code": "29046",
+    "label": "warfarin",
+    "aliases": [
+      "coumadin",
+      "warfarin 3 mg"
+    ]
+  },
+  {
+    "code": "2551",
+    "label": "ciprofloxacin",
+    "aliases": [
+      "cipro"
+    ]
+  },
+  {
+    "code": "36437",
+    "label": "sulfamethoxazole / trimethoprim",
+    "aliases": [
+      "bactrim"
+    ]
+  },
+  {
+    "code": "855332",
+    "label": "azithromycin",
+    "aliases": [
+      "z-pack",
+      "zpack"
+    ]
+  },
+  {
+    "code": "214182",
+    "label": "guaifenesin / pseudoephedrine",
+    "aliases": [
+      "mucinex d"
+    ]
+  },
+  {
+    "code": "161",
+    "label": "acetaminophen",
+    "aliases": [
+      "tylenol",
+      "paracetamol"
+    ]
+  },
+  {
+    "code": "82122",
+    "label": "levofloxacin",
+    "aliases": [
+      "levaquin",
+      "levofloxacin 500mg"
+    ]
+  },
+  {
+    "code": "4603",
+    "label": "furosemide",
+    "aliases": [
+      "lasix",
+      "lasix 40 mg"
+    ]
+  },
+  {
+    "code": "42347",
+    "label": "tacrolimus",
+    "aliases": [
+      "prograf",
+      "prograf 5mg"
+    ]
+  },
+  {
+    "code": "5640",
+    "label": "ibuprofen",
+    "aliases": [
+      "advil",
+      "motrin"
+    ]
+  },
+  {
+    "code": "83367",
+    "label": "pantoprazole",
+    "aliases": [
+      "pantoloc",
+      "pantoprazole 40mg"
+    ]
+  },
+  {
+    "code": "89905",
+    "label": "clopidogrel",
+    "aliases": [
+      "plavix"
+    ]
+  },
+  {
+    "code": "11124",
+    "label": "prednisone",
+    "aliases": [
+      "prednisolone",
+      "steroid prednisone"
+    ]
+  },
+  {
+    "code": "6851",
+    "label": "lisinopril",
+    "aliases": [
+      "zestril",
+      "prinivil"
+    ]
+  },
+  {
+    "code": "198211",
+    "label": "amlodipine",
+    "aliases": [
+      "norvasc"
+    ]
+  },
+  {
+    "code": "30131",
+    "label": "heparin",
+    "aliases": [
+      "heparin drip"
+    ]
+  },
+  {
+    "code": "10689",
+    "label": "insulin",
+    "aliases": [
+      "insulin regular",
+      "insulin tiêm"
+    ]
+  },
+  {
+    "code": "25480",
+    "label": "albuterol",
+    "aliases": [
+      "ventolin",
+      "salbutamol inhaler"
+    ]
+  },
+  {
+    "code": "1049630",
+    "label": "atorvastatin",
+    "aliases": [
+      "lipitor"
+    ]
+  },
+  {
+    "code": "7396",
+    "label": "nitroglycerin",
+    "aliases": [
+      "nitro",
+      "nitroglycerin spray"
+    ]
+  },
+  {
+    "code": "7052",
+    "label": "losartan",
+    "aliases": [
+      "cozaar"
+    ]
+  },
+  {
+    "code": "20352",
+    "label": "ceftriaxone",
+    "aliases": [
+      "rocephin"
+    ]
+  },
+  {
+    "code": "2670",
+    "label": "carvedilol",
+    "aliases": [
+      "coreg"
+    ]
+  },
+  {
+    "code": "4493",
+    "label": "gabapentin",
+    "aliases": [
+      "neurontin"
+    ]
+  }
+]

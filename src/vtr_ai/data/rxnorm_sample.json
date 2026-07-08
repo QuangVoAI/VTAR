@@ -18,6 +18,165 @@
     "code": "313782",
     "label": "salbutamol 2 MG",
     "aliases": ["salbutamol", "albuterol 2 mg"]
+  },
+  {
+    "code": "1191",
+    "label": "aspirin 325 MG",
+    "aliases": ["aspirin", "aspirin 325mg", "aspirin 81mg"]
+  },
+  {
+    "code": "3640",
+    "label": "doxycycline",
+    "aliases": ["doxycycline", "doxycyclin"]
+  },
+  {
+    "code": "6918",
+    "label": "atenolol",
+    "aliases": ["atenolol"]
+  },
+  {
+    "code": "6916",
+    "label": "metoprolol",
+    "aliases": ["metoprolol", "metoprolol succinate", "metoprolol 25mg"]
+  },
+  {
+    "code": "82122",
+    "label": "levofloxacin",
+    "aliases": ["levofloxacin", "levaquin"]
+  },
+  {
+    "code": "161",
+    "label": "acetaminophen",
+    "aliases": ["acetaminophen", "paracetamol", "tylenol"]
+  },
+  {
+    "code": "4603",
+    "label": "furosemide",
+    "aliases": ["furosemide", "lasix", "laxis"]
+  },
+  {
+    "code": "4917",
+    "label": "nitroglycerin",
+    "aliases": ["nitroglycerin", "nitroglycerin đặt dưới lưỡi"]
+  },
+  {
+    "code": "8640",
+    "label": "prednisone",
+    "aliases": ["prednisone", "prednisone 40 mg", "30 mg of prednisone"]
+  },
+  {
+    "code": "325646",
+    "label": "desmopressin",
+    "aliases": ["desmopressin"]
+  },
+  {
+    "code": "8997",
+    "label": "allopurinol",
+    "aliases": ["allopurinol"]
+  },
+  {
+    "code": "41126",
+    "label": "clopidogrel",
+    "aliases": ["clopidogrel"]
+  },
+  {
+    "code": "11124",
+    "label": "vancomycin",
+    "aliases": ["vancomycin"]
+  },
+  {
+    "code": "2193",
+    "label": "ceftazidime",
+    "aliases": ["ceftazidime"]
+  },
+  {
+    "code": "703",
+    "label": "amiodarone",
+    "aliases": ["amiodarone"]
+  },
+  {
+    "code": "3443",
+    "label": "diltiazem",
+    "aliases": ["diltiazem"]
+  },
+  {
+    "code": "7052",
+    "label": "morphine",
+    "aliases": ["morphine"]
+  },
+  {
+    "code": "3423",
+    "label": "hydromorphone",
+    "aliases": ["dilaudid", "hydromorphone"]
+  },
+  {
+    "code": "69036",
+    "label": "methylprednisolone",
+    "aliases": ["methylprednisolone"]
+  },
+  {
+    "code": "7812",
+    "label": "magnesium sulfate",
+    "aliases": ["magnesium", "iv magnesium"]
+  },
+  {
+    "code": "5487",
+    "label": "bumetanide",
+    "aliases": ["bumetanide"]
+  },
+  {
+    "code": "42347",
+    "label": "tacrolimus",
+    "aliases": ["prograf", "tacrolimus"]
+  },
+  {
+    "code": "42316",
+    "label": "imatinib",
+    "aliases": ["gleevec", "imatinib"]
+  },
+  {
+    "code": "214182",
+    "label": "guaifenesin / pseudoephedrine",
+    "aliases": ["mucinex d", "mucinex"]
+  },
+  {
+    "code": "2551",
+    "label": "ciprofloxacin",
+    "aliases": ["cipro", "ciprofloxacin"]
+  },
+  {
+    "code": "36437",
+    "label": "sulfamethoxazole / trimethoprim",
+    "aliases": ["bactrim", "trimethoprim sulfamethoxazole"]
+  },
+  {
+    "code": "855332",
+    "label": "azithromycin",
+    "aliases": ["z-pack", "azithromycin"]
+  },
+  {
+    "code": "29046",
+    "label": "warfarin",
+    "aliases": ["coumadin", "warfarin"]
+  },
+  {
+    "code": "29047",
+    "label": "lisinopril",
+    "aliases": ["lisinopril"]
+  },
+  {
+    "code": "83367",
+    "label": "atorvastatin",
+    "aliases": ["atorvastatin", "lipitor"]
+  },
+  {
+    "code": "35829",
+    "label": "ranolazine",
+    "aliases": ["ranolazine", "ranexa"]
+  },
+  {
+    "code": "197",
+    "label": "acetylcysteine",
+    "aliases": ["acetylcysteine", "nac", "n-acetylcysteine"]
   }
 ]
-

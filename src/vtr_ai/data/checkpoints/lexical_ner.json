@@ -1,0 +1,33 @@
+{
+  "provider": "lexical",
+  "patterns": [
+    {
+      "label": "TRIỆU_CHỨNG",
+      "score": 0.82,
+      "terms": [
+        "khó thở",
+        "đánh trống ngực",
+        "mệt mỏi",
+        "buồn nôn",
+        "tiêu chảy",
+        "ngất xỉu",
+        "đau bụng",
+        "đau ngực",
+        "ho",
+        "đờm"
+      ]
+    },
+    {
+      "label": "TÊN_XÉT_NGHIỆM",
+      "score": 0.9,
+      "terms": [
+        "wbc",
+        "rbc",
+        "hba1c",
+        "cea",
+        "ecg",
+        "mri"
+      ]
+    }
+  ]
+}

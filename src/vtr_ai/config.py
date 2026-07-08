@@ -9,6 +9,7 @@ import json
 class KnowledgeBaseConfig:
     icd10_path: Path
     rxnorm_path: Path
+    abbreviations_path: Path
 
 
 @dataclass(slots=True)
@@ -29,11 +30,23 @@ class OutputConfig:
 
 
 @dataclass(slots=True)
+class NerConfig:
+    backend: str = "hybrid"
+    enable_model_backend: bool = True
+    checkpoint_path: Path | None = None
+    metadata_path: Path | None = None
+    provider: str = "lexical"
+    fallback_to_rules: bool = True
+    min_score: float = 0.5
+
+
+@dataclass(slots=True)
 class AppConfig:
     knowledge_base: KnowledgeBaseConfig
     matching: MatchingConfig
     rules: RulesConfig
     output: OutputConfig
+    ner: NerConfig
 
 
 def _parse_simple_yaml(text: str) -> dict:
@@ -89,6 +102,7 @@ def load_config(config_path: str | Path) -> AppConfig:
         knowledge_base=KnowledgeBaseConfig(
             icd10_path=(base_dir / kb["icd10_path"]).resolve(),
             rxnorm_path=(base_dir / kb["rxnorm_path"]).resolve(),
+            abbreviations_path=(base_dir / kb["abbreviations_path"]).resolve(),
         ),
         matching=MatchingConfig(
             max_candidates=int(matching.get("max_candidates", 3)),
@@ -99,5 +113,27 @@ def load_config(config_path: str | Path) -> AppConfig:
             assertion_window=int(rules.get("assertion_window", 60)),
         ),
         output=OutputConfig(pretty=bool(output.get("pretty", True))),
+        ner=NerConfig(
+            backend=str(data.get("ner", {}).get("backend", "hybrid")),
+            enable_model_backend=bool(
+                data.get("ner", {}).get(
+                    "enable_model_backend",
+                    # Backward compatibility for older configs before the real model runtime landed.
+                    data.get("ner", {}).get("enable_model_stub", True),
+                )
+            ),
+            checkpoint_path=(
+                (base_dir / data.get("ner", {}).get("checkpoint_path")).resolve()
+                if data.get("ner", {}).get("checkpoint_path")
+                else None
+            ),
+            metadata_path=(
+                (base_dir / data.get("ner", {}).get("metadata_path")).resolve()
+                if data.get("ner", {}).get("metadata_path")
+                else None
+            ),
+            provider=str(data.get("ner", {}).get("provider", "lexical")),
+            fallback_to_rules=bool(data.get("ner", {}).get("fallback_to_rules", True)),
+            min_score=float(data.get("ner", {}).get("min_score", 0.5)),
+        ),
     )
-

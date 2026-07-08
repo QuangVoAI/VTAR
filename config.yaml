@@ -1,6 +1,7 @@
 knowledge_base:
   icd10_path: src/vtr_ai/data/icd10_sample.json
   rxnorm_path: src/vtr_ai/data/rxnorm_sample.json
+  abbreviations_path: src/vtr_ai/data/vi_abbreviations.json
 
 matching:
   max_candidates: 3
@@ -13,3 +14,11 @@ rules:
 output:
   pretty: true
 
+ner:
+  backend: hybrid
+  enable_model_backend: false
+  provider: lexical
+  checkpoint_path: src/vtr_ai/data/checkpoints/lexical_ner.json
+  metadata_path: src/vtr_ai/data/checkpoints/transformers_ner_metadata.json
+  fallback_to_rules: true
+  min_score: 0.5

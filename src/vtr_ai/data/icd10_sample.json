@@ -20,9 +20,168 @@
     "aliases": ["hen", "hen suyễn", "suyễn"]
   },
   {
+    "code": "E11.9",
+    "label": "Type 2 diabetes mellitus without complications",
+    "aliases": ["đái tháo đường", "tiểu đường", "đái tháo đường típ 2", "dm"]
+  },
+  {
+    "code": "J44.9",
+    "label": "Chronic obstructive pulmonary disease, unspecified",
+    "aliases": ["bệnh phổi tắc nghẽn mạn tính", "copd", "phổi tắc nghẽn mạn tính"]
+  },
+  {
     "code": "I10",
     "label": "Essential (primary) hypertension",
     "aliases": ["tăng huyết áp", "cao huyết áp"]
+  },
+  {
+    "code": "I25.10",
+    "label": "Atherosclerotic heart disease of native coronary artery without angina pectoris",
+    "aliases": ["bệnh động mạch vành", "bệnh động mạch vành mạn tính", "bệnh tim mạch do xơ vữa động mạch", "cad"]
+  },
+  {
+    "code": "L03.90",
+    "label": "Cellulitis, unspecified",
+    "aliases": ["viêm mô tế bào"]
+  },
+  {
+    "code": "I49.1",
+    "label": "Atrial premature depolarization",
+    "aliases": ["ngoại tâm thu nhĩ"]
+  },
+  {
+    "code": "I49.3",
+    "label": "Ventricular premature depolarization",
+    "aliases": ["ngoại tâm thu thất"]
+  },
+  {
+    "code": "I71.9",
+    "label": "Aortic aneurysm of unspecified site, without rupture",
+    "aliases": ["phình động mạch chủ"]
+  },
+  {
+    "code": "K70.30",
+    "label": "Alcoholic cirrhosis of liver without ascites",
+    "aliases": ["xơ gan do rượu", "xơ gan", "cirrhosis do rượu"]
+  },
+  {
+    "code": "K72.90",
+    "label": "Hepatic failure, unspecified without coma",
+    "aliases": ["hội chứng não gan", "bệnh não gan", "encephalopathy gan"]
+  },
+  {
+    "code": "I48.91",
+    "label": "Unspecified atrial fibrillation",
+    "aliases": ["rung nhĩ", "af", "atrial fibrillation"]
+  },
+  {
+    "code": "I25.2",
+    "label": "Old myocardial infarction",
+    "aliases": ["nhồi máu cơ tim cũ", "nhồi máu cơ tim vùng dưới cũ"]
+  },
+  {
+    "code": "R16.0",
+    "label": "Hepatomegaly, not elsewhere classified",
+    "aliases": ["gan to"]
+  },
+  {
+    "code": "R93.89",
+    "label": "Abnormal findings on diagnostic imaging of other specified body structures",
+    "aliases": ["tim to", "cardiomegaly"]
+  },
+  {
+    "code": "N18.9",
+    "label": "Chronic kidney disease, unspecified",
+    "aliases": ["bệnh thận mạn", "suy thận mạn", "ckd"]
+  },
+  {
+    "code": "E66.9",
+    "label": "Obesity, unspecified",
+    "aliases": ["béo phì"]
+  },
+  {
+    "code": "I60.9",
+    "label": "Subarachnoid hemorrhage, unspecified",
+    "aliases": ["xuất huyết dưới nhện"]
+  },
+  {
+    "code": "J47.9",
+    "label": "Bronchiectasis, uncomplicated",
+    "aliases": ["giãn phế quản"]
+  },
+  {
+    "code": "K58.9",
+    "label": "Irritable bowel syndrome without diarrhea",
+    "aliases": ["hội chứng ruột kích thích"]
+  },
+  {
+    "code": "R55",
+    "label": "Syncope and collapse",
+    "aliases": ["ngất xỉu do phản ứng thần kinh mạch máu sau cơn ngất", "ngất phản xạ phế vị", "ngất vasovagal"]
+  },
+  {
+    "code": "C50.912",
+    "label": "Malignant neoplasm of unspecified site of left female breast",
+    "aliases": ["ung thư vú trái", "ung thư vú trái giai iiib"]
+  },
+  {
+    "code": "I71.00",
+    "label": "Dissection of unspecified site of aorta",
+    "aliases": ["tách thành động mạch chủ", "bóc tách động mạch chủ"]
+  },
+  {
+    "code": "D25.9",
+    "label": "Leiomyoma of uterus, unspecified",
+    "aliases": ["u cơ trơn tử cung", "u xơ tử cung"]
+  },
+  {
+    "code": "F41.9",
+    "label": "Anxiety disorder, unspecified",
+    "aliases": ["rối loạn lo âu", "rối loạn lo âu không biệt định"]
+  },
+  {
+    "code": "Q03.8",
+    "label": "Other congenital hydrocephalus",
+    "aliases": ["não úng thuỷ khác từ thời kỳ sơ sinh", "não úng thủy bẩm sinh", "não úng tuỷ từ thời kỳ sơ sinh"]
+  },
+  {
+    "code": "Q66.0",
+    "label": "Congenital talipes equinovarus",
+    "aliases": ["bàn chân vẹo bẩm sinh", "bàn chân khoèo bẩm sinh", "clubfoot bẩm sinh"]
+  },
+  {
+    "code": "A41.01",
+    "label": "Sepsis due to Methicillin susceptible Staphylococcus aureus",
+    "aliases": ["nhiễm khuẩn huyết do tụ cầu vàng nhạy cảm methicillin", "nhiễm khuẩn huyết do tụ cầu vàng", "nhiễm trùng huyết do tụ cầu vàng"]
+  },
+  {
+    "code": "M86.9",
+    "label": "Osteomyelitis, unspecified",
+    "aliases": ["viêm tủy xương", "viêm tuỷ xương", "viêm tủy xương mãn tính"]
+  },
+  {
+    "code": "K92.2",
+    "label": "Gastrointestinal hemorrhage, unspecified",
+    "aliases": ["xuất huyết tiêu hóa", "xuất huyết tiêu hoá", "xhth"]
+  },
+  {
+    "code": "C20",
+    "label": "Malignant neoplasm of rectum",
+    "aliases": ["u ác trực tràng", "khối u trực tràng", "ung thư trực tràng"]
+  },
+  {
+    "code": "D12.8",
+    "label": "Benign neoplasm of rectum",
+    "aliases": ["u tuyến", "u tuyến trực tràng", "u tuyến lành trực tràng"]
+  },
+  {
+    "code": "D86.85",
+    "label": "Sarcoid myocarditis",
+    "aliases": ["sarcoid tim", "sarcoid tổn thương chủ yếu tại tim", "sacoit tổn thương chủ yếu tại tim", "u sacoit tổn thương chủ yếu tại tim"]
+  },
+  {
+    "code": "I99.9",
+    "label": "Unspecified disorder of circulatory system",
+    "aliases": ["bệnh mạch máu"]
   }
 ]
-

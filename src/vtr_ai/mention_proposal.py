@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import re
+import functools
 
 from .config import RulesConfig
+from .knowledge_base import KnowledgeBase
 from .schemas import MentionProposal
 
 
@@ -37,7 +39,7 @@ SYMPTOM_TERMS = (
 )
 
 LAB_NAME_PATTERN = re.compile(
-    r"(?P<name>\b(?:WBC|RBC|HGB|HCT|PLT|NEUT%|LYPH%|AST|ALT|CRP|GLUCOSE|HbA1c)\b(?:\s*\([^)]*\))?)",
+    r"(?P<name>\b(?:WBC|RBC|HGB|HCT|PLT|NEUT%|LYPH%|AST|ALT|CRP|GLUCOSE|HbA1c|CBC|CEA|CR|creatinine|canxi(?:\s+ion\s+hóa)?|công thức máu)\b(?:\s*\([^)]*\))?)",
     re.IGNORECASE,
 )
 LAB_VALUE_PATTERN = re.compile(
@@ -45,14 +47,14 @@ LAB_VALUE_PATTERN = re.compile(
     re.IGNORECASE,
 )
 DRUG_PATTERN = re.compile(
-    r"\b(?P<drug>[A-Za-zÀ-ỹđĐ][A-Za-zÀ-ỹđĐ0-9/\-]*(?:\s+[A-Za-zÀ-ỹđĐ0-9/\-]+){0,5}\s+\d+(?:[.,-]\d+)?\s*(?:mg/ml|mcg/ml|mg|mcg|g|ml)(?:\s+[a-z0-9:]+){0,4})\b",
+    r"\b(?P<drug>[A-Za-zÀ-ỹđĐ][A-Za-zÀ-ỹđĐ0-9./\-]*(?:[ \t]+[A-Za-zÀ-ỹđĐ0-9./\-]+){0,5}[ \t]+\d+(?:[.,-]\d+)?\s*(?:mg/ml|mcg/ml|mg|mcg|g|ml)(?:[ \t]+[a-z0-9./:\-]+){0,4})\b",
     re.IGNORECASE,
 )
 DRUG_LINE_PATTERN = re.compile(
-    r"(?P<drug>\b[a-z][a-z0-9/\-]*(?:\s+[a-z0-9/\-]+){0,4}(?:\s+\d+(?:[.,-]\d+)?\s*(?:mg/ml|mcg/ml|mg|mcg|g|ml)(?:\s+[a-z0-9:]+){0,4})?)",
+    r"(?P<drug>\b[a-z][a-z0-9./\-]*(?:[ \t]+[a-z0-9./\-]+){0,5}(?:[ \t]+\d+(?:[.,-]\d+)?\s*(?:mg/ml|mcg/ml|mg|mcg|g|ml)(?:[ \t]+[a-z0-9./:\-]+){0,4})?)",
     re.IGNORECASE,
 )
-DIAGNOSIS_TERMS = (
+BASE_DIAGNOSIS_TERMS = (
     "xơ gan",
     "hội chứng não gan",
     "tăng huyết áp",
@@ -74,18 +76,72 @@ DRUG_SECTION_HEADERS = (
     "thuốc trước khi nhập viện",
     "thuốc trước khi nhập viện lần này",
     "danh sách thuốc trước nhập viện",
+    "xử trí thuốc",
 )
 NON_DRUG_LEADING_TOKENS = {"theo", "mất", "một", "và", "các", "bệnh", "ngày"}
 DIAGNOSIS_SECTION_HEADERS = (
     "các bệnh lý mãn tính",
     "bệnh lý mãn tính",
+    "các bệnh đã điều trị trước đây",
+    "các bệnh lý mạn tính",
+    "bệnh mãn tính",
     "các phát hiện chẩn đoán khác",
     "kết quả chẩn đoán hình ảnh",
     "kết quả hình ảnh",
+    "chẩn đoán sơ bộ",
+)
+SYMPTOM_SECTION_HEADERS = (
+    "triệu chứng hiện tại",
+    "triệu chứng khi nhập viện",
+    "các triệu chứng hiện tại",
+    "đặc điểm triệu chứng khi khám tại khoa cấp cứu",
+    "thời điểm khởi phát triệu chứng",
 )
 
 
+def _extend_ho_span(text: str, end: int) -> int:
+    tail = text[end : min(len(text), end + 20)]
+    extra = re.match(r"(?:\s+đờm(?:\s+[A-Za-zÀ-ỹđĐ]+)?|\s+khan|\s+ra máu)", tail, re.IGNORECASE)
+    if extra:
+        return end + len(extra.group(0))
+    return end
+
+
+@functools.lru_cache(maxsize=16)
+def _build_trie(terms: tuple[str, ...]) -> dict:
+    trie: dict = {}
+    for term in terms:
+        node = trie
+        for char in term:
+            node = node.setdefault(char, {})
+        node["<end>"] = term
+    return trie
+
+
+def _find_trie_matches(trie: dict, text: str) -> list[tuple[int, int, str]]:
+    matches = []
+    text_len = len(text)
+    for i in range(text_len):
+        node = trie
+        for j in range(i, text_len):
+            char = text[j]
+            if char in node:
+                node = node[char]
+                if "<end>" in node:
+                    term = node["<end>"]
+                    # Unicode-aware word boundary check
+                    start_ok = (i == 0 or not text[i - 1].isalnum())
+                    end_ok = (j + 1 == text_len or not text[j + 1].isalnum())
+                    if start_ok and end_ok:
+                        matches.append((i, j + 1, term))
+            else:
+                break
+    return matches
+
+
 def _iter_lines_with_offsets(text: str) -> list[tuple[int, str]]:
+    if not text:
+        return []
     lines: list[tuple[int, str]] = []
     offset = 0
     for chunk in text.splitlines(keepends=True):
@@ -98,9 +154,54 @@ def _iter_lines_with_offsets(text: str) -> list[tuple[int, str]]:
     return lines
 
 
-def propose_mentions(text: str, config: RulesConfig) -> list[MentionProposal]:
+def _get_diagnosis_terms(knowledge_base: KnowledgeBase | None) -> tuple[str, ...]:
+    if knowledge_base is None:
+        return BASE_DIAGNOSIS_TERMS
+    merged = {term.lower() for term in BASE_DIAGNOSIS_TERMS}
+    merged.update(knowledge_base.diagnosis_terms)
+    return tuple(sorted(merged, key=len, reverse=True))
+
+
+def _source_priority(source: str) -> int:
+    if source.startswith("regex:") or source.startswith("section:"):
+        return 0
+    if source.startswith("pattern:"):
+        return 1
+    if source.startswith("gazetteer:"):
+        return 2
+    if source.startswith("kb:"):
+        return 3
+    return 4
+
+
+def _prune_contained_proposals(proposals: list[MentionProposal]) -> list[MentionProposal]:
+    ordered = sorted(
+        proposals,
+        key=lambda item: (
+            item.proposed_type,
+            item.start,
+            -(item.end - item.start),
+            _source_priority(item.source),
+        ),
+    )
+    filtered: list[MentionProposal] = []
+    for proposal in ordered:
+        drop = False
+        for kept in filtered:
+            if kept.proposed_type != proposal.proposed_type:
+                continue
+            if proposal.start >= kept.start and proposal.end <= kept.end:
+                drop = True
+                break
+        if not drop:
+            filtered.append(proposal)
+    return sorted(filtered, key=lambda item: (item.start, item.end, item.proposed_type))
+
+
+def propose_mentions(text: str, config: RulesConfig, knowledge_base: KnowledgeBase | None = None) -> list[MentionProposal]:
     proposals: list[MentionProposal] = []
     lowered = text.lower()
+    diagnosis_terms = _get_diagnosis_terms(knowledge_base)
 
     for prefix in DIAGNOSIS_PREFIXES:
         for match in re.finditer(re.escape(prefix), lowered):
@@ -109,6 +210,9 @@ def propose_mentions(text: str, config: RulesConfig) -> list[MentionProposal]:
             snippet = text[span_start:span_end]
             stop_match = re.search(r"[\n.;]", snippet)
             end = span_start + (stop_match.start() if stop_match else len(snippet))
+            candidate_text = text[span_start:end].strip().lower()
+            if "không có bệnh lý khác" in candidate_text or "khỏe mạnh" in candidate_text:
+                continue
             proposals.append(
                 MentionProposal(
                     text=text[span_start:end],
@@ -125,10 +229,7 @@ def propose_mentions(text: str, config: RulesConfig) -> list[MentionProposal]:
             start = match.start()
             end = match.end()
             if term == "ho":
-                tail = text[end : min(len(text), end + 20)]
-                extra = re.match(r"(?:\s+(?:đờm|khan|ra máu))(?:\s+[A-Za-zÀ-ỹđĐ]+)?", tail, re.IGNORECASE)
-                if extra:
-                    end += len(extra.group(0))
+                end = _extend_ho_span(text, end)
             proposals.append(
                 MentionProposal(
                     text=text[start:end],
@@ -178,23 +279,33 @@ def propose_mentions(text: str, config: RulesConfig) -> list[MentionProposal]:
 
     active_drug_section = False
     active_diag_section = False
+    active_symptom_section = False
     for line_start, line in _iter_lines_with_offsets(text):
         stripped = line.strip()
         lowered_line = stripped.lower()
         if not stripped:
             active_drug_section = False
             active_diag_section = False
+            active_symptom_section = False
             continue
         if re.match(r"^\d+\.", lowered_line):
             active_drug_section = False
             active_diag_section = False
+            active_symptom_section = False
         if any(header in lowered_line for header in DRUG_SECTION_HEADERS):
             active_drug_section = True
             active_diag_section = False
+            active_symptom_section = False
             continue
         if any(header in lowered_line for header in DIAGNOSIS_SECTION_HEADERS):
             active_diag_section = True
             active_drug_section = False
+            active_symptom_section = False
+            continue
+        if any(header in lowered_line for header in SYMPTOM_SECTION_HEADERS):
+            active_symptom_section = True
+            active_drug_section = False
+            active_diag_section = False
             continue
         if active_drug_section and lowered_line.startswith("-"):
             content = stripped.lstrip("-").strip()
@@ -228,20 +339,69 @@ def propose_mentions(text: str, config: RulesConfig) -> list[MentionProposal]:
                         )
                     )
         if active_diag_section or lowered_line.startswith("-"):
-            for term in DIAGNOSIS_TERMS:
-                pattern = rf"\b{re.escape(term)}\b" if " " not in term else re.escape(term)
-                for match in re.finditer(pattern, lowered_line):
-                    raw_start = line.lower().find(match.group(0), 0)
-                    if raw_start == -1:
-                        continue
+            if "không có bệnh lý khác" in lowered_line or "khỏe mạnh" in lowered_line:
+                continue
+            diag_trie = _build_trie(diagnosis_terms)
+            content = stripped
+            content_offset = line.lower().find(content.lower())
+            if content_offset == -1:
+                continue
+            for m_start, m_end, matched_term in _find_trie_matches(diag_trie, content.lower()):
+                proposals.append(
+                    MentionProposal(
+                        text=line[content_offset + m_start : content_offset + m_end],
+                        start=line_start + content_offset + m_start,
+                        end=line_start + content_offset + m_end,
+                        proposed_type="CHẨN_ĐOÁN",
+                        source="section:diagnosis-term",
+                    )
+                )
+        if active_symptom_section and lowered_line.startswith("-"):
+            symptom_trie = _build_trie(SYMPTOM_TERMS)
+            content = stripped.lstrip("-").strip()
+            lowered_content = content.lower()
+            content_offset = line.lower().find(lowered_content)
+            if content_offset != -1:
+                for m_start, m_end, matched_term in _find_trie_matches(symptom_trie, lowered_content):
+                    start = line_start + content_offset + m_start
+                    end = line_start + content_offset + m_end
+                    if matched_term == "ho":
+                        end = _extend_ho_span(text, end)
                     proposals.append(
                         MentionProposal(
-                            text=line[raw_start : raw_start + len(match.group(0))],
-                            start=line_start + raw_start,
-                            end=line_start + raw_start + len(match.group(0)),
-                            proposed_type="CHẨN_ĐOÁN",
-                            source="section:diagnosis-term",
+                            text=text[start:end],
+                            start=start,
+                            end=end,
+                            proposed_type="TRIỆU_CHỨNG",
+                            source="section:symptom-term",
                         )
                     )
 
-    return proposals
+    if knowledge_base is not None:
+        diag_filtered = tuple(t for t in knowledge_base.diagnosis_terms if len(t) >= 4)
+        diag_kb_trie = _build_trie(diag_filtered)
+        for m_start, m_end, matched_term in _find_trie_matches(diag_kb_trie, lowered):
+            proposals.append(
+                MentionProposal(
+                    text=text[m_start:m_end],
+                    start=m_start,
+                    end=m_end,
+                    proposed_type="CHẨN_ĐOÁN",
+                    source="kb:diagnosis-term",
+                )
+            )
+
+        drug_filtered = tuple(t for t in knowledge_base.drug_terms if len(t) >= 5 and not re.search(r"\d", t))
+        drug_kb_trie = _build_trie(drug_filtered)
+        for m_start, m_end, matched_term in _find_trie_matches(drug_kb_trie, lowered):
+            proposals.append(
+                MentionProposal(
+                    text=text[m_start:m_end],
+                    start=m_start,
+                    end=m_end,
+                    proposed_type="THUỐC",
+                    source="kb:drug-term",
+                )
+            )
+
+    return _prune_contained_proposals(proposals)

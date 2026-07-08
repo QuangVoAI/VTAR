@@ -17,14 +17,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = build_arg_parser()
-    args = parser.parse_args(argv)
-    config = load_config(args.config)
+def run_inference(input_dir: str | Path, output_dir: str | Path, config_path: str | Path) -> int:
+    config = load_config(config_path)
     kb = load_knowledge_base(config.knowledge_base.icd10_path, config.knowledge_base.rxnorm_path)
     pipeline = ClinicalNlpPipeline(config, kb)
-    input_files = read_txt_files(args.input_dir)
-    output_dir = Path(args.output_dir)
+    input_files = read_txt_files(input_dir)
+    output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     for input_path in input_files:
         entities = pipeline.process_text(input_path.read_text(encoding="utf-8"))
@@ -33,6 +31,11 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
+def main(argv: list[str] | None = None) -> int:
+    parser = build_arg_parser()
+    args = parser.parse_args(argv)
+    return run_inference(args.input_dir, args.output_dir, args.config)
+
+
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -3,3 +3,7 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 output/
+artifacts/
+.cache/
+output.zip
+tmp_review_output/
