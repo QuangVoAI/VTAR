@@ -1,0 +1,18 @@
+[
+  {
+    "text": "Đái tháo đường",
+    "position": [
+      48,
+      62
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9",
+      "E11.00",
+      "E11.01"
+    ]
+  }
+]

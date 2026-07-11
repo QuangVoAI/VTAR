@@ -1,0 +1,30 @@
+[
+  {
+    "text": "bệnh động mạch vành",
+    "position": [
+      34,
+      53
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  },
+  {
+    "text": "bệnh lý thần kinh ngoại biên",
+    "position": [
+      55,
+      83
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

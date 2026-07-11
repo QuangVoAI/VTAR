@@ -1,0 +1,40 @@
+[
+  {
+    "text": "khó thở",
+    "position": [
+      59,
+      66
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "Khó thở",
+    "position": [
+      190,
+      197
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "bệnh động mạch vành",
+    "position": [
+      327,
+      346
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  }
+]

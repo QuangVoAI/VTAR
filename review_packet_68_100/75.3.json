@@ -1,0 +1,42 @@
+[
+  {
+    "text": "vã mồ hôi",
+    "position": [
+      50,
+      59
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "troponin",
+    "position": [
+      84,
+      92
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "0.10",
+    "position": [
+      96,
+      100
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "điện tâm đồ cho thấy nhịp xoangnhịp xoang, tần số 91 lần/phút",
+    "position": [
+      138,
+      199
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

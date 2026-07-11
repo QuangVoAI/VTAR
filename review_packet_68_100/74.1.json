@@ -1,0 +1,30 @@
+[
+  {
+    "text": "cipro",
+    "position": [
+      165,
+      170
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "2551"
+    ]
+  },
+  {
+    "text": "bactrim",
+    "position": [
+      177,
+      184
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "36437"
+    ]
+  }
+]

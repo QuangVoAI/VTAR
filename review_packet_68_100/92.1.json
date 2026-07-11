@@ -1,0 +1,14 @@
+[
+  {
+    "text": "Nhiễm trùng đường tiết niệu kháng thuốc",
+    "position": [
+      45,
+      84
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

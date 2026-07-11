@@ -1,0 +1,776 @@
+[
+  {
+    "file_name": "100.1.txt",
+    "entities": 5,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 5
+    },
+    "assertion_count": 5
+  },
+  {
+    "file_name": "100.2.txt",
+    "entities": 7,
+    "empty": false,
+    "types": {
+      "TÊN_XÉT_NGHIỆM": 2,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 2,
+      "TRIỆU_CHỨNG": 2,
+      "THUỐC": 1
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "100.3.txt",
+    "entities": 7,
+    "empty": false,
+    "types": {
+      "TÊN_XÉT_NGHIỆM": 3,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 3,
+      "THUỐC": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "68.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "68.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "68.3.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "69.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "69.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "69.3.txt",
+    "entities": 5,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 5
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "70.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "THUỐC": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "70.2.txt",
+    "entities": 17,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 11,
+      "THUỐC": 2,
+      "TÊN_XÉT_NGHIỆM": 2,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 2
+    },
+    "assertion_count": 8
+  },
+  {
+    "file_name": "70.3.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TÊN_XÉT_NGHIỆM": 2,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "71.1.txt",
+    "entities": 5,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 4,
+      "THUỐC": 1
+    },
+    "assertion_count": 5
+  },
+  {
+    "file_name": "71.2.txt",
+    "entities": 10,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 9,
+      "THUỐC": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "71.3.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "72.1.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "72.2.txt",
+    "entities": 5,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2,
+      "TÊN_XÉT_NGHIỆM": 1,
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "72.3.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TÊN_XÉT_NGHIỆM": 1,
+      "CHẨN_ĐOÁN": 3
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "73.1.txt",
+    "entities": 16,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 8,
+      "THUỐC": 8
+    },
+    "assertion_count": 16
+  },
+  {
+    "file_name": "73.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "73.3.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "74.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "THUỐC": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "74.2.txt",
+    "entities": 8,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 6,
+      "THUỐC": 2
+    },
+    "assertion_count": 5
+  },
+  {
+    "file_name": "74.3.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TÊN_XÉT_NGHIỆM": 1,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "75.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "75.2.txt",
+    "entities": 8,
+    "empty": false,
+    "types": {
+      "THUỐC": 6,
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "75.3.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 1,
+      "TÊN_XÉT_NGHIỆM": 1,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 1,
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "76.1.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 3,
+      "THUỐC": 1
+    },
+    "assertion_count": 4
+  },
+  {
+    "file_name": "76.2.txt",
+    "entities": 9,
+    "empty": false,
+    "types": {
+      "THUỐC": 3,
+      "TRIỆU_CHỨNG": 4,
+      "TÊN_XÉT_NGHIỆM": 1,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "77.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "77.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "78.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "78.2.txt",
+    "entities": 5,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 5
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "79.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "79.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "80.1.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "80.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "81.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "81.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "82.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 3
+    },
+    "assertion_count": 3
+  },
+  {
+    "file_name": "82.2.txt",
+    "entities": 11,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 9,
+      "TÊN_XÉT_NGHIỆM": 1,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "83.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2,
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "84.1.txt",
+    "entities": 6,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 4,
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 6
+  },
+  {
+    "file_name": "84.2.txt",
+    "entities": 7,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 4,
+      "CHẨN_ĐOÁN": 1,
+      "THUỐC": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "85.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 3
+    },
+    "assertion_count": 3
+  },
+  {
+    "file_name": "85.2.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "85.3.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "86.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "86.2.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 4
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "87.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "87.2.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2,
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "88.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "88.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "THUỐC": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "89.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "THUỐC": 2
+    },
+    "assertion_count": 3
+  },
+  {
+    "file_name": "89.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "90.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 2,
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "90.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "91.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "91.2.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 4
+    },
+    "assertion_count": 4
+  },
+  {
+    "file_name": "91.3.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "THUỐC": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "92.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "92.2.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "92.3.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "TÊN_XÉT_NGHIỆM": 1,
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "93.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "93.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "93.3.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "94.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "THUỐC": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "94.2.txt",
+    "entities": 10,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 10
+    },
+    "assertion_count": 9
+  },
+  {
+    "file_name": "94.3.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "95.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "95.2.txt",
+    "entities": 5,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 5
+    },
+    "assertion_count": 3
+  },
+  {
+    "file_name": "95.3.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  },
+  {
+    "file_name": "96.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "THUỐC": 1
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "96.2.txt",
+    "entities": 8,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 4,
+      "CHẨN_ĐOÁN": 4
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "97.1.txt",
+    "entities": 3,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 3
+    },
+    "assertion_count": 3
+  },
+  {
+    "file_name": "97.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "97.3.txt",
+    "entities": 13,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 3,
+      "TÊN_XÉT_NGHIỆM": 5,
+      "KẾT_QUẢ_XÉT_NGHIỆM": 4,
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "98.1.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1
+    },
+    "assertion_count": 1
+  },
+  {
+    "file_name": "98.2.txt",
+    "entities": 1,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "98.3.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 2
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "99.1.txt",
+    "entities": 2,
+    "empty": false,
+    "types": {
+      "CHẨN_ĐOÁN": 1,
+      "TRIỆU_CHỨNG": 1
+    },
+    "assertion_count": 2
+  },
+  {
+    "file_name": "99.2.txt",
+    "entities": 4,
+    "empty": false,
+    "types": {
+      "TRIỆU_CHỨNG": 4
+    },
+    "assertion_count": 0
+  },
+  {
+    "file_name": "99.3.txt",
+    "entities": 0,
+    "empty": true,
+    "types": {},
+    "assertion_count": 0
+  }
+]

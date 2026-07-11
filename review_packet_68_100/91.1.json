@@ -1,0 +1,34 @@
+[
+  {
+    "text": "rung nhĩ",
+    "position": [
+      102,
+      110
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I48.91",
+      "I48.0",
+      "I48.11"
+    ]
+  },
+  {
+    "text": "Suy thận mạn",
+    "position": [
+      159,
+      171
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "N18.9",
+      "N18.1",
+      "N18.2"
+    ]
+  }
+]

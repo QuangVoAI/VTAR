@@ -1,0 +1,26 @@
+[
+  {
+    "text": "Lasix",
+    "position": [
+      193,
+      198
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "4603"
+    ]
+  },
+  {
+    "text": "lasix",
+    "position": [
+      253,
+      258
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "4603"
+    ]
+  }
+]

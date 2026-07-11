@@ -1,0 +1,98 @@
+[
+  {
+    "text": "nitroglycerin",
+    "position": [
+      235,
+      248
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      522,
+      529
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "buồn nôn",
+    "position": [
+      552,
+      560
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "nôn",
+    "position": [
+      567,
+      570
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "tiêu chảy",
+    "position": [
+      577,
+      586
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "heparin",
+    "position": [
+      610,
+      617
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "30131"
+    ]
+  },
+  {
+    "text": "nitro",
+    "position": [
+      645,
+      650
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  },
+  {
+    "text": "creatinine",
+    "position": [
+      722,
+      732
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "2.0",
+    "position": [
+      737,
+      740
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  }
+]

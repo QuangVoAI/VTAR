@@ -1,0 +1,52 @@
+[
+  {
+    "text": "vàng da",
+    "position": [
+      91,
+      98
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ngứa",
+    "position": [
+      111,
+      115
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "bilirubin",
+    "position": [
+      191,
+      200
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ung thư biểu mô tuyến",
+    "position": [
+      626,
+      647
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "khối u có nguồn gốc từ đường mật tụy",
+    "position": [
+      713,
+      749
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

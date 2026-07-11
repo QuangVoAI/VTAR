@@ -1,0 +1,42 @@
+[
+  {
+    "text": "tổn thương chi dưới",
+    "position": [
+      43,
+      62
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "tổn thương chi dưới",
+    "position": [
+      305,
+      324
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "thuyên tắc phổi hai bên",
+    "position": [
+      632,
+      655
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "nhiễm trùng chi dưới bên phải",
+    "position": [
+      659,
+      688
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

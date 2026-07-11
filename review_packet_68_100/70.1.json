@@ -1,0 +1,17 @@
+[
+  {
+    "text": "acetaminophen 500mg",
+    "position": [
+      171,
+      190
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "161",
+      "82122"
+    ]
+  }
+]

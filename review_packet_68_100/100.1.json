@@ -1,0 +1,62 @@
+[
+  {
+    "text": "tăng calci máu",
+    "position": [
+      61,
+      75
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "U ác của đại tràng",
+    "position": [
+      123,
+      141
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "cường cận giáp nguyên phát",
+    "position": [
+      148,
+      174
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "Xơ vữa động mạch",
+    "position": [
+      181,
+      197
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "cơn đau thắt ngực ổn định",
+    "position": [
+      204,
+      229
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

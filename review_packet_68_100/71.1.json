@@ -1,0 +1,76 @@
+[
+  {
+    "text": "Tăng huyết áp",
+    "position": [
+      39,
+      52
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  },
+  {
+    "text": "Đái tháo đường típ 2",
+    "position": [
+      72,
+      92
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9",
+      "E11.00",
+      "E11.01"
+    ]
+  },
+  {
+    "text": "bệnh tim mạch do xơ vữa động mạch",
+    "position": [
+      95,
+      128
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  },
+  {
+    "text": "Tăng huyết áp",
+    "position": [
+      189,
+      202
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  },
+  {
+    "text": "lasix",
+    "position": [
+      272,
+      277
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "4603"
+    ]
+  }
+]

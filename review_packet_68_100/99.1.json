@@ -1,0 +1,28 @@
+[
+  {
+    "text": "rối loạn lo âu, không biệt định nghiêm trọng",
+    "position": [
+      39,
+      83
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "F41.9"
+    ]
+  },
+  {
+    "text": "lo âu",
+    "position": [
+      48,
+      53
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "text": "viêm tủy xương mãn tính",
+    "position": [
+      18,
+      41
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "M86.9",
+      "M86.00",
+      "M86.011"
+    ]
+  },
+  {
+    "text": "bactrim",
+    "position": [
+      321,
+      328
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "36437"
+    ]
+  }
+]

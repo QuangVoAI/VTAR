@@ -1,0 +1,85 @@
+[
+  {
+    "text": "mệt mỏi",
+    "position": [
+      141,
+      148
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ho",
+    "position": [
+      150,
+      152
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "mệt mỏi",
+    "position": [
+      564,
+      571
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ho",
+    "position": [
+      578,
+      580
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "viêm phổi",
+    "position": [
+      1017,
+      1026
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "J18.9",
+      "J18.0",
+      "J18.1"
+    ]
+  },
+  {
+    "text": "Albuterol",
+    "position": [
+      1084,
+      1093
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "25480",
+      "313782"
+    ]
+  },
+  {
+    "text": "Tylenol",
+    "position": [
+      1163,
+      1170
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "161"
+    ]
+  }
+]

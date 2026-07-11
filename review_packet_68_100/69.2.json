@@ -1,0 +1,22 @@
+[
+  {
+    "text": "mệt mỏi",
+    "position": [
+      59,
+      66
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "mệt mỏi",
+    "position": [
+      143,
+      150
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  }
+]

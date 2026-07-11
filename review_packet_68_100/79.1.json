@@ -1,0 +1,34 @@
+[
+  {
+    "text": "bàn chân vẹo bẩm sinh",
+    "position": [
+      39,
+      60
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "Q66.0",
+      "Q66.00",
+      "Q66.01"
+    ]
+  },
+  {
+    "text": "bàn chân vẹo bẩm sinh",
+    "position": [
+      153,
+      174
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "Q66.0",
+      "Q66.00",
+      "Q66.01"
+    ]
+  }
+]

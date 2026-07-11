@@ -1,0 +1,50 @@
+[
+  {
+    "text": "Đái tháo đường",
+    "position": [
+      57,
+      71
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9",
+      "E11.00",
+      "E11.01"
+    ]
+  },
+  {
+    "text": "bệnh động mạch vành",
+    "position": [
+      86,
+      105
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  },
+  {
+    "text": "bệnh phổi tắc nghẽn mạn tính",
+    "position": [
+      199,
+      227
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "J44.9",
+      "J44.0",
+      "J44.1"
+    ]
+  }
+]

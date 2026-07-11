@@ -1,0 +1,26 @@
+[
+  {
+    "text": "ho",
+    "position": [
+      81,
+      83
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      84,
+      91
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

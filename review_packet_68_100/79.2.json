@@ -1,0 +1,22 @@
+[
+  {
+    "text": "chảy dịch",
+    "position": [
+      42,
+      51
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "chảy dịch",
+    "position": [
+      118,
+      127
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  }
+]

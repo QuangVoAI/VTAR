@@ -1,0 +1,48 @@
+[
+  {
+    "text": "Suy thận mạn",
+    "position": [
+      48,
+      60
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "N18.9",
+      "N18.1",
+      "N18.2"
+    ]
+  },
+  {
+    "text": "đái tháo đường",
+    "position": [
+      76,
+      90
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9",
+      "E11.00",
+      "E11.01"
+    ]
+  },
+  {
+    "text": "tăng huyết áp",
+    "position": [
+      94,
+      107
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  }
+]

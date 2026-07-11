@@ -1,0 +1,18 @@
+[
+  {
+    "text": "bệnh phổi tắc nghẽn mạn tính",
+    "position": [
+      57,
+      85
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "J44.9",
+      "J44.0",
+      "J44.1"
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "text": "Ung thư vú di căn ER+/HER2−",
+    "position": [
+      49,
+      76
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "weekly taxol",
+    "position": [
+      98,
+      110
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "fulvestrant",
+    "position": [
+      114,
+      125
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": []
+  }
+]

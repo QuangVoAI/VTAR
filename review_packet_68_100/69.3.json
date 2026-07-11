@@ -1,0 +1,52 @@
+[
+  {
+    "text": "khối ở chỗ uốn gan",
+    "position": [
+      284,
+      302
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ung thư biểu mô tuyến",
+    "position": [
+      309,
+      330
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "tiền sử khối u thận",
+    "position": [
+      353,
+      372
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ung thư biểu mô tế bào thận",
+    "position": [
+      379,
+      406
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ung thư biểu mô tuyến giật nhú",
+    "position": [
+      413,
+      443
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

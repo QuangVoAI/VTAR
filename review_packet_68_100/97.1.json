@@ -1,0 +1,42 @@
+[
+  {
+    "text": "viêm tủy xương",
+    "position": [
+      52,
+      66
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "M86.9",
+      "M86.00",
+      "M86.011"
+    ]
+  },
+  {
+    "text": "bàng quang thần kinh",
+    "position": [
+      70,
+      90
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "liệt hai chi dưới",
+    "position": [
+      105,
+      122
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "text": "Bệnh động mạch vành",
+    "position": [
+      183,
+      202
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  }
+]

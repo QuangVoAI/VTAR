@@ -1,0 +1,42 @@
+[
+  {
+    "text": "bilirubin",
+    "position": [
+      84,
+      93
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "ung thư biểu mô tuyến",
+    "position": [
+      157,
+      178
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "u ác của đầu tuỵ",
+    "position": [
+      609,
+      625
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "khối u có nguồn gốc từ đường mật tụy",
+    "position": [
+      683,
+      719
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

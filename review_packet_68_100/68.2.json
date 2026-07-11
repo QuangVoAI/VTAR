@@ -1,0 +1,22 @@
+[
+  {
+    "text": "yếu",
+    "position": [
+      47,
+      50
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "yếu",
+    "position": [
+      81,
+      84
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  }
+]

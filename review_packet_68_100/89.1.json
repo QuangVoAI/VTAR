@@ -1,0 +1,38 @@
+[
+  {
+    "text": "khối u thần kinh nội tiết ở thân tụy",
+    "position": [
+      130,
+      166
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "octreotide",
+    "position": [
+      206,
+      216
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "flagyl",
+    "position": [
+      223,
+      229
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

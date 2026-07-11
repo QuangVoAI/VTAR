@@ -1,0 +1,22 @@
+[
+  {
+    "text": "đại tràng giãn",
+    "position": [
+      52,
+      66
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "lơ mơ",
+    "position": [
+      329,
+      334
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  }
+]

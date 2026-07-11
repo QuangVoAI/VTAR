@@ -1,0 +1,22 @@
+[
+  {
+    "text": "các tổn thương ổ tiêu xương lan tỏa",
+    "position": [
+      59,
+      94
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "Đa u tủy xương",
+    "position": [
+      110,
+      124
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

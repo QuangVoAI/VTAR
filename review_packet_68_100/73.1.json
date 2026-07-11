@@ -1,0 +1,236 @@
+[
+  {
+    "text": "tăng huyết áp",
+    "position": [
+      193,
+      206
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  },
+  {
+    "text": "Tăng huyết áp",
+    "position": [
+      229,
+      242
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I10"
+    ]
+  },
+  {
+    "text": "Đái tháo đường",
+    "position": [
+      320,
+      334
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9",
+      "E11.00",
+      "E11.01"
+    ]
+  },
+  {
+    "text": "Đái tháo đường típ 2",
+    "position": [
+      343,
+      363
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "E11.9",
+      "E11.00",
+      "E11.01"
+    ]
+  },
+  {
+    "text": "bệnh phổi tắc nghẽn mạn tính",
+    "position": [
+      371,
+      399
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "J44.9",
+      "J44.0",
+      "J44.1"
+    ]
+  },
+  {
+    "text": "bệnh phổi tắc nghẽn mạn tính",
+    "position": [
+      417,
+      445
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "J44.9",
+      "J44.0",
+      "J44.1"
+    ]
+  },
+  {
+    "text": "bệnh tim mạch do xơ vữa động mạch",
+    "position": [
+      469,
+      502
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  },
+  {
+    "text": "bệnh tim mạch do xơ vữa động mạch",
+    "position": [
+      504,
+      537
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "I25.10",
+      "I25.110",
+      "I25.111"
+    ]
+  },
+  {
+    "text": "aspirin 81mg",
+    "position": [
+      760,
+      772
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "1191"
+    ]
+  },
+  {
+    "text": "clopidogrel",
+    "position": [
+      787,
+      798
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "89905"
+    ]
+  },
+  {
+    "text": "clopidogrel",
+    "position": [
+      822,
+      833
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "89905"
+    ]
+  },
+  {
+    "text": "metoprolol succinate 100mg",
+    "position": [
+      860,
+      886
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "6916"
+    ]
+  },
+  {
+    "text": "lasix 40mg",
+    "position": [
+      911,
+      921
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "4603"
+    ]
+  },
+  {
+    "text": "atorvastatin 80mg",
+    "position": [
+      946,
+      963
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "1049630"
+    ]
+  },
+  {
+    "text": "lisinopril 2.5mg",
+    "position": [
+      986,
+      1002
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": [
+      "6851"
+    ]
+  },
+  {
+    "text": "ranexa 500mg",
+    "position": [
+      1025,
+      1037
+    ],
+    "type": "THUỐC",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

@@ -1,0 +1,94 @@
+[
+  {
+    "text": "nitroglycerin",
+    "position": [
+      188,
+      201
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      287,
+      294
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "nitroglycerin",
+    "position": [
+      311,
+      324
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  },
+  {
+    "text": "khó thở",
+    "position": [
+      501,
+      508
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "aspirin",
+    "position": [
+      628,
+      635
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "1191"
+    ]
+  },
+  {
+    "text": "nitroglycerin",
+    "position": [
+      658,
+      671
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  },
+  {
+    "text": "nitroglycerin",
+    "position": [
+      685,
+      698
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  },
+  {
+    "text": "nitroglycerin",
+    "position": [
+      723,
+      736
+    ],
+    "type": "THUỐC",
+    "assertions": [],
+    "candidates": [
+      "7396"
+    ]
+  }
+]

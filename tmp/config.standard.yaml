@@ -1,0 +1,24 @@
+knowledge_base:
+  icd10_path: /Users/springwang/Documents/VTR/src/vtr_ai/data/icd10_standard.json
+  rxnorm_path: /Users/springwang/Documents/VTR/src/vtr_ai/data/rxnorm_standard.json
+  abbreviations_path: /Users/springwang/Documents/VTR/src/vtr_ai/data/vi_abbreviations.json
+
+matching:
+  max_candidates: 3
+  min_confidence: 0.55
+
+rules:
+  symptom_window: 80
+  assertion_window: 60
+
+output:
+  pretty: true
+
+ner:
+  backend: hybrid
+  enable_model_backend: false
+  provider: lexical
+  checkpoint_path: /Users/springwang/Documents/VTR/src/vtr_ai/data/checkpoints/lexical_ner.json
+  metadata_path: /Users/springwang/Documents/VTR/src/vtr_ai/data/checkpoints/transformers_ner_metadata.json
+  fallback_to_rules: true
+  min_score: 0.5

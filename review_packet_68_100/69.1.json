@@ -1,0 +1,26 @@
+[
+  {
+    "text": "ung thư biểu mô tế bào thận",
+    "position": [
+      87,
+      114
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "ung thư biểu mô tuyến giật nhú",
+    "position": [
+      147,
+      177
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

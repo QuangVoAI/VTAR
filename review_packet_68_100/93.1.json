@@ -1,0 +1,26 @@
+[
+  {
+    "text": "Ung thư vú di căn",
+    "position": [
+      25,
+      42
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "tràn dịch màng phổi trái tái phát",
+    "position": [
+      44,
+      77
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [
+      "isHistorical"
+    ],
+    "candidates": []
+  }
+]

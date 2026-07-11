@@ -1,0 +1,22 @@
+[
+  {
+    "text": "Tuột sonde dẫn lưu ổ bụng",
+    "position": [
+      42,
+      67
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "PICC được chuyển sang LUE",
+    "position": [
+      1108,
+      1133
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  }
+]

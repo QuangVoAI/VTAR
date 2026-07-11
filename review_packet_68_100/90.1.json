@@ -1,0 +1,32 @@
+[
+  {
+    "text": "giọng khàn",
+    "position": [
+      37,
+      47
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "giọng khàn",
+    "position": [
+      100,
+      110
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "tổn thương dây thanh quản thật sự",
+    "position": [
+      113,
+      146
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]

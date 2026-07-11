@@ -1,0 +1,22 @@
+[
+  {
+    "text": "công thức máu (cbc)",
+    "position": [
+      51,
+      70
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "12",
+    "position": [
+      74,
+      76
+    ],
+    "type": "KẾT_QUẢ_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  }
+]

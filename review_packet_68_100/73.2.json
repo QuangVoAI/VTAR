@@ -1,0 +1,26 @@
+[
+  {
+    "text": "khó thở",
+    "position": [
+      527,
+      534
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": []
+  },
+  {
+    "text": "đánh trống ngực",
+    "position": [
+      536,
+      551
+    ],
+    "type": "TRIỆU_CHỨNG",
+    "assertions": [
+      "isNegated"
+    ],
+    "candidates": []
+  }
+]

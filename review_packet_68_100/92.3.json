@@ -1,0 +1,22 @@
+[
+  {
+    "text": "Bạch cầu",
+    "position": [
+      51,
+      59
+    ],
+    "type": "TÊN_XÉT_NGHIỆM",
+    "assertions": [],
+    "candidates": []
+  },
+  {
+    "text": "đại tràng giãn",
+    "position": [
+      177,
+      191
+    ],
+    "type": "CHẨN_ĐOÁN",
+    "assertions": [],
+    "candidates": []
+  }
+]
