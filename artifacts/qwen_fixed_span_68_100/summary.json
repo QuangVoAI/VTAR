@@ -1,0 +1,11 @@
+{
+  "total_examples": 242,
+  "train_examples": 185,
+  "dev_examples": 26,
+  "test_examples": 31,
+  "entity_type_counts": {
+    "TRIỆU_CHỨNG": 118,
+    "CHẨN_ĐOÁN": 85,
+    "THUỐC": 39
+  }
+}
