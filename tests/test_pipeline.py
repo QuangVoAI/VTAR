@@ -40,6 +40,13 @@ from vtr_ai.review_to_gold import export_review_jsonl_to_gold_dir
 from vtr_ai.review_packet import export_review_packet
 from vtr_ai.review_subset import rank_files_for_review
 from vtr_ai.review_to_train import main as review_to_train_main
+from vtr_ai.prepare_semantic_datasets import collect_semantic_examples, export_semantic_dataset_bundle
+from vtr_ai.qwen_fixed_span import (
+    apply_prediction_to_entity,
+    collect_fixed_span_examples,
+    export_qwen_fixed_span_dataset,
+    parse_qwen_json_response,
+)
 from vtr_ai.schemas import Entity
 from vtr_ai.select_review_subset import export_selected_review_subset
 from vtr_ai.submission import main as submission_main
@@ -1252,6 +1259,242 @@ class PipelineTests(unittest.TestCase):
             )
             with self.assertRaises(ReviewValidationError):
                 validate_review_jsonl(review_jsonl)
+
+    def test_collect_semantic_examples_builds_shortlist_with_gold_code(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            input_dir = tmp_path / "input"
+            gold_dir = tmp_path / "gold"
+            input_dir.mkdir()
+            gold_dir.mkdir()
+            config_path = _write_lexical_test_config(tmp_path / "config.yaml")
+
+            raw_text = "Bệnh lý mãn tính: tăng huyết áp. Thuốc trước khi nhập viện: aspirin 81mg."
+            (input_dir / "1.txt").write_text(raw_text, encoding="utf-8")
+            (gold_dir / "1.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "text": "tăng huyết áp",
+                            "position": [18, 31],
+                            "type": "CHẨN_ĐOÁN",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["I10"],
+                        },
+                        {
+                            "text": "aspirin 81mg",
+                            "position": [60, 72],
+                            "type": "THUỐC",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["1191"],
+                        },
+                    ],
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+
+            examples, unmatched = collect_semantic_examples(input_dir, gold_dir, config_path, shortlist_size=5)
+            self.assertEqual(unmatched, [])
+            self.assertEqual(len(examples), 2)
+            by_type = {example.entity_type: example for example in examples}
+            self.assertIn("I10", [item["code"] for item in by_type["CHẨN_ĐOÁN"].shortlist])
+            self.assertIn("1191", [item["code"] for item in by_type["THUỐC"].shortlist])
+
+    def test_export_semantic_dataset_bundle_writes_prompt_and_sft_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            input_dir = tmp_path / "input"
+            gold_dir = tmp_path / "gold"
+            output_dir = tmp_path / "semantic_bundle"
+            input_dir.mkdir()
+            gold_dir.mkdir()
+            config_path = _write_lexical_test_config(tmp_path / "config.yaml")
+
+            samples = {
+                "1": (
+                    "Bệnh lý mãn tính: tăng huyết áp.",
+                    [
+                        {
+                            "text": "tăng huyết áp",
+                            "position": [18, 31],
+                            "type": "CHẨN_ĐOÁN",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["I10"],
+                        }
+                    ],
+                ),
+                "2": (
+                    "Thuốc trước khi nhập viện: aspirin 81mg.",
+                    [
+                        {
+                            "text": "aspirin 81mg",
+                            "position": [27, 39],
+                            "type": "THUỐC",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["1191"],
+                        }
+                    ],
+                ),
+                "3": (
+                    "Bệnh lý mãn tính: COPD.",
+                    [
+                        {
+                            "text": "COPD",
+                            "position": [18, 22],
+                            "type": "CHẨN_ĐOÁN",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["J44.9"],
+                        }
+                    ],
+                ),
+            }
+            for stem, (raw_text, entities) in samples.items():
+                (input_dir / f"{stem}.txt").write_text(raw_text, encoding="utf-8")
+                (gold_dir / f"{stem}.json").write_text(json.dumps(entities, ensure_ascii=False, indent=2), encoding="utf-8")
+
+            written = export_semantic_dataset_bundle(
+                input_dir=input_dir,
+                gold_dir=gold_dir,
+                config_path=config_path,
+                output_dir=output_dir,
+                shortlist_size=5,
+                support_size_per_type=1,
+                shots_per_query=1,
+                seed=13,
+            )
+            self.assertEqual(written, output_dir)
+            self.assertTrue((output_dir / "summary.json").exists())
+            self.assertTrue((output_dir / "support.jsonl").exists())
+            self.assertTrue((output_dir / "zero_shot_eval.jsonl").exists())
+            self.assertTrue((output_dir / "few_shot_eval.jsonl").exists())
+            self.assertTrue((output_dir / "sft_train.jsonl").exists())
+            self.assertTrue((output_dir / "sft_dev.jsonl").exists())
+
+            zero_shot_lines = (output_dir / "zero_shot_eval.jsonl").read_text(encoding="utf-8").strip().splitlines()
+            if zero_shot_lines:
+                payload = json.loads(zero_shot_lines[0])
+                self.assertEqual(payload["messages"][0]["role"], "system")
+                self.assertIn("candidates", payload["expected"])
+            sft_lines = (output_dir / "sft_train.jsonl").read_text(encoding="utf-8").strip().splitlines()
+            if sft_lines:
+                payload = json.loads(sft_lines[0])
+                self.assertEqual(payload["messages"][-1]["role"], "assistant")
+                self.assertIn("candidates", payload["messages"][-1]["content"])
+
+    def test_collect_fixed_span_examples_keeps_gold_assertions_and_candidates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            input_dir = tmp_path / "input"
+            gold_dir = tmp_path / "gold"
+            input_dir.mkdir()
+            gold_dir.mkdir()
+            config_path = _write_lexical_test_config(tmp_path / "config.yaml")
+
+            raw_text = "Bệnh lý mãn tính: tăng huyết áp. Triệu chứng hiện tại: khó thở. Thuốc trước khi nhập viện: aspirin 81mg."
+            (input_dir / "1.txt").write_text(raw_text, encoding="utf-8")
+            (gold_dir / "1.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "text": "tăng huyết áp",
+                            "position": [18, 31],
+                            "type": "CHẨN_ĐOÁN",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["I10"],
+                        },
+                        {
+                            "text": "khó thở",
+                            "position": [55, 62],
+                            "type": "TRIỆU_CHỨNG",
+                            "assertions": ["isNegated", "isHistorical"],
+                            "candidates": [],
+                        },
+                        {
+                            "text": "aspirin 81mg",
+                            "position": [91, 103],
+                            "type": "THUỐC",
+                            "assertions": ["isHistorical"],
+                            "candidates": ["1191"],
+                        },
+                    ],
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+
+            examples = collect_fixed_span_examples(input_dir, gold_dir, config_path, shortlist_size=5)
+            self.assertEqual(len(examples), 3)
+            by_type = {example.entity_type: example for example in examples}
+            self.assertEqual(by_type["CHẨN_ĐOÁN"].gold_candidates, ["I10"])
+            self.assertEqual(by_type["TRIỆU_CHỨNG"].gold_assertions, ["isHistorical", "isNegated"])
+            self.assertEqual(by_type["TRIỆU_CHỨNG"].gold_candidates, [])
+            self.assertIn("1191", [item["code"] for item in by_type["THUỐC"].shortlist])
+
+    def test_export_qwen_fixed_span_dataset_writes_sft_and_eval_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            input_dir = tmp_path / "input"
+            gold_dir = tmp_path / "gold"
+            output_dir = tmp_path / "qwen_fixed_span"
+            input_dir.mkdir()
+            gold_dir.mkdir()
+            config_path = _write_lexical_test_config(tmp_path / "config.yaml")
+
+            samples = {
+                "1": (
+                    "Bệnh lý mãn tính: tăng huyết áp.",
+                    [{"text": "tăng huyết áp", "position": [18, 31], "type": "CHẨN_ĐOÁN", "assertions": ["isHistorical"], "candidates": ["I10"]}],
+                ),
+                "2": (
+                    "Thuốc trước khi nhập viện: aspirin 81mg.",
+                    [{"text": "aspirin 81mg", "position": [27, 39], "type": "THUỐC", "assertions": ["isHistorical"], "candidates": ["1191"]}],
+                ),
+                "3": (
+                    "Triệu chứng hiện tại: khó thở.",
+                    [{"text": "khó thở", "position": [22, 29], "type": "TRIỆU_CHỨNG", "assertions": ["isNegated"], "candidates": []}],
+                ),
+            }
+            for stem, (raw_text, entities) in samples.items():
+                (input_dir / f"{stem}.txt").write_text(raw_text, encoding="utf-8")
+                (gold_dir / f"{stem}.json").write_text(json.dumps(entities, ensure_ascii=False, indent=2), encoding="utf-8")
+
+            written = export_qwen_fixed_span_dataset(
+                input_dir=input_dir,
+                gold_dir=gold_dir,
+                config_path=config_path,
+                output_dir=output_dir,
+                shortlist_size=5,
+                seed=7,
+            )
+            self.assertEqual(written, output_dir)
+            self.assertTrue((output_dir / "sft_train.jsonl").exists())
+            self.assertTrue((output_dir / "eval_test.jsonl").exists())
+            train_lines = (output_dir / "sft_train.jsonl").read_text(encoding="utf-8").strip().splitlines()
+            if train_lines:
+                payload = json.loads(train_lines[0])
+                self.assertEqual(payload["messages"][-1]["role"], "assistant")
+                self.assertIn("assertions", payload["messages"][-1]["content"])
+
+    def test_parse_qwen_json_response_and_apply_prediction_to_entity(self) -> None:
+        parsed = parse_qwen_json_response(
+            "```json\n{\"assertions\":[\"isNegated\",\"bad\"],\"candidates\":[\"I10\",\"I10\"]}\n```"
+        )
+        self.assertEqual(parsed["assertions"], ["isNegated"])
+        self.assertEqual(parsed["candidates"], ["I10"])
+
+        symptom = {
+            "text": "khó thở",
+            "position": [1, 8],
+            "type": "TRIỆU_CHỨNG",
+            "assertions": [],
+            "candidates": ["should-clear"],
+        }
+        updated = apply_prediction_to_entity(symptom, {"assertions": ["isFamily"], "candidates": ["X"]})
+        self.assertEqual(updated["assertions"], ["isFamily"])
+        self.assertEqual(updated["candidates"], [])
 
     def test_mention_proposal_handles_empty_or_newline_text_gracefully(self) -> None:
         from vtr_ai.mention_proposal import _iter_lines_with_offsets, propose_mentions

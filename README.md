@@ -315,6 +315,112 @@ gold_to_ner_jsonl \
 
 File JSONL này dùng trực tiếp cho `train_ner`.
 
+## Chuẩn bị semantic ICD/RxNorm cho zero-shot, few-shot, và SFT
+
+Khi đã có `input_dir` + `gold_dir` đã audit, có thể dựng bộ semantic mapping cho `CHẨN_ĐOÁN` và `THUỐC`:
+
+```bash
+prepare_semantic_datasets \
+  --input_dir /Users/springwang/Documents/VTR/review_packet_68_100_split/txt \
+  --gold_dir /Users/springwang/Documents/VTR/review_packet_68_100_split/json \
+  --config /Users/springwang/Documents/VTR/tmp/config.standard.yaml \
+  --output_dir /Users/springwang/Documents/VTR/artifacts/semantic_68_100 \
+  --shortlist_size 10 \
+  --shortlist_min_confidence 0.1 \
+  --support_size_per_type 6 \
+  --shots_per_query 4
+```
+
+Artifacts sinh ra gồm:
+
+- `zero_shot_eval.jsonl`
+- `few_shot_eval.jsonl`
+- `sft_train.jsonl`
+- `sft_dev.jsonl`
+- `semantic_unmapped.jsonl`
+- `summary.json`
+
+Chi tiết workflow ở:
+
+- [docs/semantic_mapping_workflow.md](/Users/springwang/Documents/VTR/docs/semantic_mapping_workflow.md)
+
+## Fine-tune Qwen Theo Fixed Span
+
+Nếu bạn đã có dữ liệu mapped và muốn giữ nguyên `span/type/position`, chỉ để `Qwen2.5-7B` học:
+
+- `assertions` đa nhãn
+- `candidates` ICD-10 / RxNorm
+
+thì dùng luồng fixed-span này thay vì để model sinh toàn bộ JSON.
+
+### 1. Convert mapped data sang format train cho Qwen
+
+```bash
+prepare_qwen_fixed_span_dataset \
+  --input_dir /Users/springwang/Documents/VTR/review_packet_68_100_split/txt \
+  --gold_dir /Users/springwang/Documents/VTR/review_packet_68_100_split/json \
+  --config /Users/springwang/Documents/VTR/tmp/config.standard.yaml \
+  --output_dir /Users/springwang/Documents/VTR/artifacts/qwen_fixed_span_68_100
+```
+
+Output chính:
+
+- `sft_train.jsonl`, `sft_dev.jsonl`, `sft_test.jsonl`
+- `eval_train.jsonl`, `eval_dev.jsonl`, `eval_test.jsonl`
+- `fixed_span_examples.jsonl`
+
+Mỗi example có dạng:
+
+- `system`: nhắc model không được sửa span/position
+- `user`: chứa `mention`, `type`, `position`, `context`, `shortlist`
+- `assistant`: chỉ trả `{"assertions":[...],"candidates":[...]}`
+
+### 2. Train Qwen
+
+Script này ưu tiên chat-template của Qwen và chỉ tính loss trên phần `assistant`.
+
+```bash
+train_qwen_fixed_span \
+  --train_jsonl /Users/springwang/Documents/VTR/artifacts/qwen_fixed_span_68_100/sft_train.jsonl \
+  --eval_jsonl /Users/springwang/Documents/VTR/artifacts/qwen_fixed_span_68_100/sft_dev.jsonl \
+  --model_name Qwen/Qwen2.5-7B-Instruct \
+  --output_dir /Users/springwang/Documents/VTR/artifacts/qwen2.5-7b-fixed-span \
+  --use_lora
+```
+
+Nếu muốn QLoRA thực tế hơn cho model 7B, cài thêm:
+
+```bash
+pip install peft bitsandbytes accelerate
+```
+
+và chạy thêm `--load_in_4bit`.
+
+### 3. Infer và ghép lại JSON Viettel
+
+`infer_qwen_fixed_span` sẽ:
+
+- đọc raw `*.txt`
+- đọc `span_dir` đã có `text/type/position`
+- gọi Qwen để dự đoán `assertions/candidates`
+- ghép lại đúng entity cũ
+- giữ nguyên `position`
+
+```bash
+infer_qwen_fixed_span \
+  --input_dir /Users/springwang/Downloads/input \
+  --span_dir /Users/springwang/Documents/VTR/output_fixed_spans \
+  --output_dir /Users/springwang/Documents/VTR/output_qwen_fixed_span \
+  --config /Users/springwang/Documents/VTR/config.yaml \
+  --model_name /Users/springwang/Documents/VTR/artifacts/qwen2.5-7b-fixed-span
+```
+
+Hướng này phù hợp với chấm Viettel hơn vì:
+
+- span không bị LLM làm lệch
+- `position` luôn bám raw text
+- model chỉ tập trung vào phần khó hơn là assertion + semantic code
+
 Nếu muốn đi thẳng từ review JSONL sang cả `gold_dir` và `train_jsonl` trong một lệnh:
 
 ```bash

@@ -31,6 +31,10 @@ review_packet = "vtr_ai.review_packet:main"
 review_to_train = "vtr_ai.review_to_train:main"
 validate_review_jsonl = "vtr_ai.validate_review_jsonl:main"
 build_standard_kb = "vtr_ai.build_standard_kb:main"
+prepare_semantic_datasets = "vtr_ai.prepare_semantic_datasets:main"
+prepare_qwen_fixed_span_dataset = "vtr_ai.prepare_qwen_fixed_span_dataset:main"
+train_qwen_fixed_span = "vtr_ai.train_qwen_fixed_span:main"
+infer_qwen_fixed_span = "vtr_ai.infer_qwen_fixed_span:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
