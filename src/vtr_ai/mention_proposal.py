@@ -36,10 +36,19 @@ SYMPTOM_TERMS = (
     "táo bón",
     "ngất xỉu",
     "căng thẳng",
+    "yếu",
+    "vàng da",
+    "ngứa",
+    "vã mồ hôi",
+    "chảy dịch",
+    "giọng khàn",
+    "lơ mơ",
+    "hạ huyết áp",
+    "hạ thân nhiệt",
 )
 
 LAB_NAME_PATTERN = re.compile(
-    r"(?P<name>\b(?:WBC|RBC|HGB|HCT|PLT|NEUT%|LYPH%|AST|ALT|CRP|GLUCOSE|HbA1c|CBC|CEA|CR|creatinine|canxi(?:\s+ion\s+hóa)?|công thức máu)\b(?:\s*\([^)]*\))?)",
+    r"(?P<name>\b(?:WBC|RBC|HGB|HCT|PLT|NEUT%|LYPH%|AST|ALT|CRP|GLUCOSE|HbA1c|CBC|CEA|CR|creatinine|creatinin|troponin|kali|bilirubin(?:\s+toàn\s+phần)?|bạch cầu|tiểu cầu|đường huyết(?:\s+lúc\s+đói)?|canxi(?:\s+ion\s+hóa)?|công thức máu)\b(?:\s*\([^)]*\))?)",
     re.IGNORECASE,
 )
 LAB_VALUE_PATTERN = re.compile(
@@ -71,6 +80,31 @@ BASE_DIAGNOSIS_TERMS = (
     "ngoại tâm thu nhĩ",
     "ngoại tâm thu thất",
     "tim to",
+    "u ác của đại tràng",
+    "cường cận giáp nguyên phát",
+    "xơ vữa động mạch",
+    "cơn đau thắt ngực ổn định",
+    "ung thư biểu mô tế bào thận",
+    "ung thư biểu mô tuyến giáp nhú",
+    "ung thư biểu mô tuyến giật nhú",
+    "ung thư biểu mô tuyến",
+    "khối ở chỗ uốn gan",
+    "u ác của đầu tuỵ",
+    "u ác của đầu tụy",
+    "khối u có nguồn gốc từ đường mật tụy",
+    "gãy xương sườn",
+    "đụng dập nhu mô phổi",
+    "vết thương thấu bụng",
+    "tổn thương dây thanh quản",
+    "nhiễm trùng đường tiết niệu kháng thuốc",
+    "đại tràng giãn",
+    "ung thư vú di căn",
+    "tràn dịch màng phổi trái tái phát",
+    "tràn dịch màng ngoài tim",
+    "đa u tủy xương",
+    "tổn thương chi dưới",
+    "thuyên tắc phổi",
+    "nhiễm trùng chi dưới",
 )
 DRUG_SECTION_HEADERS = (
     "thuốc trước khi nhập viện",
@@ -80,11 +114,13 @@ DRUG_SECTION_HEADERS = (
 )
 NON_DRUG_LEADING_TOKENS = {"theo", "mất", "một", "và", "các", "bệnh", "ngày"}
 DIAGNOSIS_SECTION_HEADERS = (
+    "tiền sử bệnh nội khoa",
     "các bệnh lý mãn tính",
     "bệnh lý mãn tính",
     "các bệnh đã điều trị trước đây",
     "các bệnh lý mạn tính",
     "bệnh mãn tính",
+    "bệnh mạn tính",
     "các phát hiện chẩn đoán khác",
     "kết quả chẩn đoán hình ảnh",
     "kết quả hình ảnh",
@@ -96,7 +132,78 @@ SYMPTOM_SECTION_HEADERS = (
     "các triệu chứng hiện tại",
     "đặc điểm triệu chứng khi khám tại khoa cấp cứu",
     "thời điểm khởi phát triệu chứng",
+    "triệu chứng lúc vào",
+    "dấu hiệu lâm sàng",
+    "tình trạng lúc vào viện",
+    "tình trạng vào khoa cấp cứu",
 )
+
+GENERIC_BODY_PATTERNS = (
+    "không có bệnh lý khác",
+    "khỏe mạnh",
+    "ổn định về mặt huyết động",
+    "đang chờ kết quả",
+)
+
+
+def _find_header_body(line: str, headers: tuple[str, ...]) -> tuple[int, str] | None:
+    lowered_line = line.lower()
+    for header in headers:
+        pos = lowered_line.find(header)
+        if pos == -1:
+            continue
+        colon_pos = line.find(":", pos)
+        if colon_pos == -1:
+            continue
+        body = line[colon_pos + 1 :].strip()
+        if body:
+            return colon_pos + 1, body
+    return None
+
+
+def _add_body_gazetteer_matches(
+    proposals: list[MentionProposal],
+    line: str,
+    line_start: int,
+    body_offset: int,
+    body_text: str,
+    trie: dict,
+    proposal_type: str,
+    source: str,
+) -> bool:
+    matched = False
+    lowered_body = body_text.lower()
+    for m_start, m_end, matched_term in _find_trie_matches(trie, lowered_body):
+        start = line_start + body_offset + m_start
+        end = line_start + body_offset + m_end
+        if matched_term == "ho":
+            end = _extend_ho_span(line, body_offset + m_end) - body_offset + start
+        proposals.append(
+            MentionProposal(
+                text=line[body_offset + m_start : body_offset + m_end],
+                start=start,
+                end=end,
+                proposed_type=proposal_type,
+                source=source,
+            )
+        )
+        matched = True
+    return matched
+
+
+def _should_keep_section_body(body: str) -> bool:
+    lowered = body.lower().strip(" -")
+    if len(lowered) < 2:
+        return False
+    if len(lowered) > 96:
+        return False
+    if lowered.count(",") > 1 or lowered.count(";") > 0:
+        return False
+    if len(lowered.split()) > 12:
+        return False
+    if any(pattern in lowered for pattern in GENERIC_BODY_PATTERNS):
+        return False
+    return True
 
 
 def _extend_ho_span(text: str, end: int) -> int:
@@ -202,6 +309,8 @@ def propose_mentions(text: str, config: RulesConfig, knowledge_base: KnowledgeBa
     proposals: list[MentionProposal] = []
     lowered = text.lower()
     diagnosis_terms = _get_diagnosis_terms(knowledge_base)
+    diag_trie = _build_trie(diagnosis_terms)
+    symptom_trie = _build_trie(SYMPTOM_TERMS)
 
     for prefix in DIAGNOSIS_PREFIXES:
         for match in re.finditer(re.escape(prefix), lowered):
@@ -292,6 +401,52 @@ def propose_mentions(text: str, config: RulesConfig, knowledge_base: KnowledgeBa
             active_drug_section = False
             active_diag_section = False
             active_symptom_section = False
+        inline_diag = _find_header_body(line, DIAGNOSIS_SECTION_HEADERS)
+        if inline_diag is not None:
+            body_offset, body_text = inline_diag
+            matched = _add_body_gazetteer_matches(
+                proposals,
+                line,
+                line_start,
+                body_offset,
+                body_text,
+                diag_trie,
+                "CHẨN_ĐOÁN",
+                "inline:diagnosis-body",
+            )
+            if not matched and _should_keep_section_body(body_text):
+                proposals.append(
+                    MentionProposal(
+                        text=body_text,
+                        start=line_start + body_offset + line[body_offset:].find(body_text),
+                        end=line_start + body_offset + line[body_offset:].find(body_text) + len(body_text),
+                        proposed_type="CHẨN_ĐOÁN",
+                        source="inline:diagnosis-fallback",
+                    )
+                )
+        inline_symptom = _find_header_body(line, SYMPTOM_SECTION_HEADERS)
+        if inline_symptom is not None:
+            body_offset, body_text = inline_symptom
+            matched = _add_body_gazetteer_matches(
+                proposals,
+                line,
+                line_start,
+                body_offset,
+                body_text,
+                symptom_trie,
+                "TRIỆU_CHỨNG",
+                "inline:symptom-body",
+            )
+            if not matched and _should_keep_section_body(body_text):
+                proposals.append(
+                    MentionProposal(
+                        text=body_text,
+                        start=line_start + body_offset + line[body_offset:].find(body_text),
+                        end=line_start + body_offset + line[body_offset:].find(body_text) + len(body_text),
+                        proposed_type="TRIỆU_CHỨNG",
+                        source="inline:symptom-fallback",
+                    )
+                )
         if any(header in lowered_line for header in DRUG_SECTION_HEADERS):
             active_drug_section = True
             active_diag_section = False
@@ -341,7 +496,6 @@ def propose_mentions(text: str, config: RulesConfig, knowledge_base: KnowledgeBa
         if active_diag_section or lowered_line.startswith("-"):
             if "không có bệnh lý khác" in lowered_line or "khỏe mạnh" in lowered_line:
                 continue
-            diag_trie = _build_trie(diagnosis_terms)
             content = stripped
             content_offset = line.lower().find(content.lower())
             if content_offset == -1:
@@ -356,8 +510,27 @@ def propose_mentions(text: str, config: RulesConfig, knowledge_base: KnowledgeBa
                         source="section:diagnosis-term",
                     )
                 )
+            if active_diag_section and lowered_line.startswith("-") and _should_keep_section_body(content):
+                has_diag = any(
+                    proposal.proposed_type == "CHẨN_ĐOÁN"
+                    and proposal.start >= line_start
+                    and proposal.end <= line_start + len(line)
+                    for proposal in proposals
+                )
+                if not has_diag:
+                    normalized_content = content.lstrip("-").strip()
+                    norm_offset = line.lower().find(normalized_content.lower())
+                    if norm_offset != -1:
+                        proposals.append(
+                            MentionProposal(
+                                text=line[norm_offset : norm_offset + len(normalized_content)],
+                                start=line_start + norm_offset,
+                                end=line_start + norm_offset + len(normalized_content),
+                                proposed_type="CHẨN_ĐOÁN",
+                                source="section:diagnosis-fallback",
+                            )
+                        )
         if active_symptom_section and lowered_line.startswith("-"):
-            symptom_trie = _build_trie(SYMPTOM_TERMS)
             content = stripped.lstrip("-").strip()
             lowered_content = content.lower()
             content_offset = line.lower().find(lowered_content)
@@ -376,6 +549,23 @@ def propose_mentions(text: str, config: RulesConfig, knowledge_base: KnowledgeBa
                             source="section:symptom-term",
                         )
                     )
+                if _should_keep_section_body(content):
+                    has_symptom = any(
+                        proposal.proposed_type == "TRIỆU_CHỨNG"
+                        and proposal.start >= line_start
+                        and proposal.end <= line_start + len(line)
+                        for proposal in proposals
+                    )
+                    if not has_symptom:
+                        proposals.append(
+                            MentionProposal(
+                                text=line[content_offset : content_offset + len(content)],
+                                start=line_start + content_offset,
+                                end=line_start + content_offset + len(content),
+                                proposed_type="TRIỆU_CHỨNG",
+                                source="section:symptom-fallback",
+                            )
+                        )
 
     if knowledge_base is not None:
         diag_filtered = tuple(t for t in knowledge_base.diagnosis_terms if len(t) >= 4)

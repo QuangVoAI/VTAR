@@ -7,8 +7,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from .candidate_generation import rank_candidates_indexed
-from .config import MatchingConfig, load_config
+from .config import load_config
+from .fixed_span_shortlist import rank_fixed_span_shortlist, rank_fixed_span_shortlist_records
 from .knowledge_base import KnowledgeBase, KnowledgeRecord, load_knowledge_base
 from .schemas import ASSERTION_TYPES
 from .validation import ValidationError, validate_entity_dict
@@ -16,13 +16,16 @@ from .validation import ValidationError, validate_entity_dict
 
 QWEN_TARGET_TYPES = {"TRIỆU_CHỨNG", "CHẨN_ĐOÁN", "THUỐC"}
 SYSTEM_PROMPT = (
-    "Bạn là trợ lý chuẩn hóa thực thể y khoa cho bài Viettel. "
+    "Bạn là trợ lý chuẩn hóa thực thể y khoa. "
     "Span, type, text và position đã được cố định từ bước extract trước đó. "
     "Không được sửa span hay position. "
     "Nhiệm vụ của bạn chỉ là dự đoán assertions đa nhãn và candidates mã chuẩn. "
     "Với TRIỆU_CHỨNG thì candidates luôn phải là []. "
     "Với CHẨN_ĐOÁN chỉ chọn mã ICD-10 từ shortlist nếu có. "
     "Với THUỐC chỉ chọn mã RxNorm từ shortlist nếu có. "
+    "Assertions và candidates là hai quyết định độc lập. "
+    "Nếu mention là CHẨN_ĐOÁN hoặc THUỐC và shortlist có mã khớp rõ ràng, vẫn phải trả mã đó kể cả khi assertion là isHistorical, isNegated hoặc isFamily. "
+    "Chỉ trả candidates [] khi shortlist thật sự không có mã phù hợp với mention. "
     "Luôn trả đúng JSON schema {\"assertions\":[\"...\"],\"candidates\":[\"...\"]}."
 )
 
@@ -71,12 +74,13 @@ def _rank_shortlist(
     shortlist_size: int,
     min_confidence: float,
 ) -> list[str]:
-    config = MatchingConfig(max_candidates=shortlist_size, min_confidence=min_confidence)
-    records = knowledge_base.icd10 if entity_type == "CHẨN_ĐOÁN" else knowledge_base.rxnorm
-    return [
-        candidate.code
-        for candidate in rank_candidates_indexed(mention, records, config, knowledge_base, entity_type)
-    ]
+    return rank_fixed_span_shortlist(
+        mention=mention,
+        entity_type=entity_type,
+        knowledge_base=knowledge_base,
+        shortlist_size=shortlist_size,
+        min_confidence=min_confidence,
+    )
 
 
 def _build_shortlist(
@@ -91,7 +95,15 @@ def _build_shortlist(
     gold_candidates = gold_candidates or []
     if entity_type not in {"CHẨN_ĐOÁN", "THUỐC"}:
         return []
-    ranked_codes = _rank_shortlist(mention, entity_type, knowledge_base, shortlist_size, min_confidence)
+    ranked_rows = rank_fixed_span_shortlist_records(
+        mention=mention,
+        entity_type=entity_type,
+        knowledge_base=knowledge_base,
+        shortlist_size=shortlist_size,
+        min_confidence=min_confidence,
+    )
+    ranked_codes = [row.code for row in ranked_rows]
+    ranked_map = {row.code: row for row in ranked_rows}
     merged: list[str] = []
     for code in ranked_codes + gold_candidates:
         if code and code not in merged:
@@ -101,8 +113,11 @@ def _build_shortlist(
     return [
         {
             "code": code,
-            "label": label_map.get(code, ""),
+            "label": label_map.get(code, "") or (ranked_map.get(code).matched_alias if code in ranked_map else ""),
             "is_gold": code in gold_candidates,
+            "score": round(ranked_map.get(code).score, 4) if code in ranked_map else 0.0,
+            "source": ranked_map.get(code).source if code in ranked_map else "gold",
+            "matched_alias": ranked_map.get(code).matched_alias if code in ranked_map else label_map.get(code, ""),
         }
         for code in merged
     ]
@@ -121,6 +136,8 @@ def _normalize_candidates(candidates: list[str]) -> list[str]:
     deduped: list[str] = []
     for item in candidates:
         code = str(item).strip()
+        if ":" in code:
+            code = code.split(":", 1)[0].strip()
         if code and code not in deduped:
             deduped.append(code)
     return deduped[:3]
@@ -229,7 +246,10 @@ def split_fixed_span_examples(
 def _shortlist_text(shortlist: list[dict]) -> str:
     if not shortlist:
         return "- none"
-    return "\n".join(f"- {item['code']}: {item['label']}" for item in shortlist)
+    return "\n".join(
+        f"- {item['code']}: {item['label']} | matched_alias={item.get('matched_alias', item['label'])} | score={item.get('score', 0.0):.4f} | source={item.get('source', 'unknown')}"
+        for item in shortlist
+    )
 
 
 def build_fixed_span_user_prompt(example: FixedSpanExample) -> str:
@@ -245,6 +265,9 @@ def build_fixed_span_user_prompt(example: FixedSpanExample) -> str:
         "{\"assertions\":[\"...\"],\"candidates\":[\"...\"]}. "
         "Assertions chỉ gồm isNegated, isFamily, isHistorical. "
         "Nếu không có assertion thì trả assertions rỗng. "
+        "Assertions không được dùng để xóa candidate đúng. "
+        "Nếu shortlist có mã khớp rõ ràng với mention, hãy giữ candidate đó ngay cả khi assertion là isHistorical, isNegated hoặc isFamily. "
+        "Nếu có nhiều mã cùng phù hợp trong shortlist, có thể trả nhiều mã theo thứ tự tin cậy giảm dần, tối đa 3 mã. "
         "Nếu không có mã phù hợp hoặc loại thực thể không cần mã thì trả candidates rỗng."
     )
 
@@ -366,6 +389,7 @@ def build_runtime_example(
     context_window: int = 220,
     shortlist_size: int = 10,
     shortlist_min_confidence: float = 0.1,
+    gold_candidates: list[str] | None = None,
 ) -> FixedSpanExample:
     config = load_config(config_path)
     knowledge_base = load_knowledge_base(config.knowledge_base.icd10_path, config.knowledge_base.rxnorm_path)
@@ -383,6 +407,7 @@ def build_runtime_example(
         shortlist_size=shortlist_size,
         min_confidence=shortlist_min_confidence,
         label_maps=label_maps,
+        gold_candidates=gold_candidates,
     )
     return FixedSpanExample(
         example_id=_stable_entity_id(file_name, start, end, entity_type),

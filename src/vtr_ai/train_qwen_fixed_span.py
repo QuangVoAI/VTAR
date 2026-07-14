@@ -12,6 +12,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train_jsonl", required=True)
     parser.add_argument("--eval_jsonl")
     parser.add_argument("--model_name", required=True)
+    parser.add_argument("--adapter_init_path")
     parser.add_argument("--output_dir", required=True)
     parser.add_argument("--max_length", type=int, default=1536)
     parser.add_argument("--batch_size", type=int, default=1)
@@ -58,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.use_lora or args.load_in_4bit:
         try:
-            from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training  # type: ignore
+            from peft import LoraConfig, PeftModel, get_peft_model, prepare_model_for_kbit_training  # type: ignore
         except ImportError:
             parser.error("LoRA/4bit training requires peft. Install peft and bitsandbytes if needed.")
 
@@ -67,7 +68,8 @@ def main(argv: list[str] | None = None) -> int:
     if not train_rows:
         parser.error("Training set is empty.")
 
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name, use_fast=True)
+    tokenizer_source = args.adapter_init_path or args.model_name
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_source, use_fast=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     if not tokenizer.chat_template:
@@ -86,37 +88,48 @@ def main(argv: list[str] | None = None) -> int:
     model.config.use_cache = False
 
     if args.use_lora:
-        lora_config = LoraConfig(
-            r=args.lora_r,
-            lora_alpha=args.lora_alpha,
-            lora_dropout=args.lora_dropout,
-            bias="none",
-            task_type="CAUSAL_LM",
-            target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
-        )
         if args.load_in_4bit:
             model = prepare_model_for_kbit_training(model)
-        model = get_peft_model(model, lora_config)
+        if args.adapter_init_path:
+            model = PeftModel.from_pretrained(model, args.adapter_init_path, is_trainable=True)
+        else:
+            lora_config = LoraConfig(
+                r=args.lora_r,
+                lora_alpha=args.lora_alpha,
+                lora_dropout=args.lora_dropout,
+                bias="none",
+                task_type="CAUSAL_LM",
+                target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+            )
+            model = get_peft_model(model, lora_config)
 
     def _preprocess(row: dict) -> dict:
-        encoded = tokenizer.apply_chat_template(
-            row["messages"],
-            tokenize=True,
+        prompt_messages = row["messages"][:-1]
+        full_messages = row["messages"]
+        prompt_text = tokenizer.apply_chat_template(
+            prompt_messages,
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        full_text = tokenizer.apply_chat_template(
+            full_messages,
+            tokenize=False,
             add_generation_prompt=False,
+        )
+        prompt_encoded = tokenizer(
+            prompt_text,
             truncation=True,
             max_length=args.max_length,
-            return_dict=True,
-            return_assistant_tokens_mask=True,
         )
-        input_ids = list(encoded["input_ids"])
-        attention_mask = list(encoded["attention_mask"])
-        assistant_mask = list(encoded.get("assistant_tokens_mask", []))
-        if not assistant_mask:
-            raise ValueError(
-                "Chat template did not return assistant token mask. "
-                "Use a tokenizer whose template supports generation blocks."
-            )
-        labels = [token_id if mask else -100 for token_id, mask in zip(input_ids, assistant_mask)]
+        full_encoded = tokenizer(
+            full_text,
+            truncation=True,
+            max_length=args.max_length,
+        )
+        input_ids = list(full_encoded["input_ids"])
+        attention_mask = list(full_encoded["attention_mask"])
+        prompt_len = min(len(prompt_encoded["input_ids"]), len(input_ids))
+        labels = [-100] * prompt_len + input_ids[prompt_len:]
         return {
             "input_ids": input_ids,
             "attention_mask": attention_mask,

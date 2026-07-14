@@ -7,8 +7,8 @@ import random
 from dataclasses import dataclass
 from pathlib import Path
 
-from .candidate_generation import rank_candidates_indexed
-from .config import MatchingConfig, load_config
+from .config import load_config
+from .fixed_span_shortlist import rank_fixed_span_shortlist, rank_fixed_span_shortlist_records
 from .knowledge_base import KnowledgeBase, KnowledgeRecord, load_knowledge_base
 from .validation import validate_output_directory
 
@@ -70,9 +70,13 @@ def _rank_shortlist(
     shortlist_size: int,
     min_confidence: float,
 ) -> list[str]:
-    config = MatchingConfig(max_candidates=shortlist_size, min_confidence=min_confidence)
-    records = knowledge_base.icd10 if entity_type == "CHẨN_ĐOÁN" else knowledge_base.rxnorm
-    return [candidate.code for candidate in rank_candidates_indexed(mention, records, config, knowledge_base, entity_type)]
+    return rank_fixed_span_shortlist(
+        mention=mention,
+        entity_type=entity_type,
+        knowledge_base=knowledge_base,
+        shortlist_size=shortlist_size,
+        min_confidence=min_confidence,
+    )
 
 
 def _build_shortlist(
@@ -84,7 +88,15 @@ def _build_shortlist(
     min_confidence: float,
     label_maps: dict[str, dict[str, str]],
 ) -> list[dict]:
-    ranked_codes = _rank_shortlist(mention, entity_type, knowledge_base, shortlist_size, min_confidence)
+    ranked_rows = rank_fixed_span_shortlist_records(
+        mention=mention,
+        entity_type=entity_type,
+        knowledge_base=knowledge_base,
+        shortlist_size=shortlist_size,
+        min_confidence=min_confidence,
+    )
+    ranked_codes = [row.code for row in ranked_rows]
+    ranked_map = {row.code: row for row in ranked_rows}
     merged: list[str] = []
     for code in ranked_codes + gold_candidates:
         if code and code not in merged:
@@ -98,6 +110,9 @@ def _build_shortlist(
                 "code": code,
                 "label": label_map.get(code, ""),
                 "is_gold": code in gold_candidates,
+                "score": round(ranked_map.get(code).score, 4) if code in ranked_map else 0.0,
+                "source": ranked_map.get(code).source if code in ranked_map else "gold",
+                "matched_alias": ranked_map.get(code).matched_alias if code in ranked_map else label_map.get(code, ""),
             }
         )
     return shortlist
@@ -265,7 +280,9 @@ def _shortlist_text(shortlist: list[dict]) -> str:
     lines = []
     for row in shortlist:
         label = row["label"] or ""
-        lines.append(f"- {row['code']}: {label}")
+        lines.append(
+            f"- {row['code']}: {label} | score={row.get('score', 0.0):.4f} | source={row.get('source', 'unknown')}"
+        )
     return "\n".join(lines)
 
 
@@ -279,6 +296,7 @@ def build_user_prompt(example: SemanticExample) -> str:
         f"Ngữ cảnh:\n{example.context}\n\n"
         f"Shortlist mã được phép chọn:\n{_shortlist_text(example.shortlist)}\n\n"
         "Trả về JSON đúng schema {\"candidates\":[\"...\"]}. "
+        "Nếu có nhiều mã phù hợp trong shortlist, trả tối đa 3 mã theo thứ tự tin cậy giảm dần. "
         "Nếu không có mã nào phù hợp trong shortlist, trả {\"candidates\":[]}."
     )
 

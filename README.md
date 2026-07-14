@@ -421,6 +421,61 @@ Hướng này phù hợp với chấm Viettel hơn vì:
 - `position` luôn bám raw text
 - model chỉ tập trung vào phần khó hơn là assertion + semantic code
 
+### Chạy trên Modal
+
+Repo này đã có script:
+
+- [modal_qwen_fixed_span.py](/Users/springwang/Documents/VTR/modal_qwen_fixed_span.py)
+
+Chuẩn bị local:
+
+```bash
+pip install -U modal
+python -m modal setup
+python -m modal secret create huggingface-secret HF_TOKEN=hf_xxx
+```
+
+Train LoRA trên Modal:
+
+```bash
+modal run modal_qwen_fixed_span.py::train
+```
+
+Nếu muốn đổi hyperparameters:
+
+```bash
+modal run modal_qwen_fixed_span.py::train \
+  --num-train-epochs 3 \
+  --batch-size 1 \
+  --gradient-accumulation-steps 16 \
+  --load-in-4bit
+```
+
+Sau khi train xong, tải checkpoint về local:
+
+```bash
+modal volume get vtr-qwen-fixed-span-train qwen25-7b-fixed-span-lora ./artifacts/qwen25-7b-fixed-span-lora
+```
+
+Chạy inference trên Modal với raw txt + span JSON đã có sẵn trong `review_packet_68_100`:
+
+```bash
+modal run modal_qwen_fixed_span.py::infer
+```
+
+Nếu adapter ở Hugging Face repo khác:
+
+```bash
+modal run modal_qwen_fixed_span.py::infer \
+  --adapter-path your-user/your-adapter-repo
+```
+
+Tải output JSON về local:
+
+```bash
+modal volume get vtr-qwen-fixed-span-infer viettel_qwen_fixed_span_output ./outputs/viettel_qwen_fixed_span_output
+```
+
 Nếu muốn đi thẳng từ review JSONL sang cả `gold_dir` và `train_jsonl` trong một lệnh:
 
 ```bash

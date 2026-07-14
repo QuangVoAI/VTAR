@@ -35,6 +35,14 @@ prepare_semantic_datasets = "vtr_ai.prepare_semantic_datasets:main"
 prepare_qwen_fixed_span_dataset = "vtr_ai.prepare_qwen_fixed_span_dataset:main"
 train_qwen_fixed_span = "vtr_ai.train_qwen_fixed_span:main"
 infer_qwen_fixed_span = "vtr_ai.infer_qwen_fixed_span:main"
+remap_split_spans_to_raw = "vtr_ai.remap_split_spans_to_raw:main"
+materialize_bootstrap_raw_subset = "vtr_ai.materialize_bootstrap_raw_subset:main"
+materialize_bootstrap_dataset = "vtr_ai.materialize_bootstrap_dataset:main"
+analyze_fixed_span_subset = "vtr_ai.analyze_fixed_span_subset:main"
+sanity_check_subset_output = "vtr_ai.sanity_check_subset_output:main"
+fetch_and_analyze_subset_baseline = "vtr_ai.fetch_and_analyze_subset_baseline:main"
+package_subset_output = "vtr_ai.package_subset_output:main"
+compare_subset_outputs = "vtr_ai.compare_subset_outputs:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

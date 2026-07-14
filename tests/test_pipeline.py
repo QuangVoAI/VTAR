@@ -1485,6 +1485,11 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(parsed["assertions"], ["isNegated"])
         self.assertEqual(parsed["candidates"], ["I10"])
 
+        parsed_with_labels = parse_qwen_json_response(
+            "```json\n{\"assertions\":[],\"candidates\":[\"I10: Essential (primary) hypertension\",\"1191: aspirin 325 MG\"]}\n```"
+        )
+        self.assertEqual(parsed_with_labels["candidates"], ["I10", "1191"])
+
         symptom = {
             "text": "khó thở",
             "position": [1, 8],
