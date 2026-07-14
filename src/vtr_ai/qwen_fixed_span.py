@@ -104,10 +104,14 @@ def _build_shortlist(
     )
     ranked_codes = [row.code for row in ranked_rows]
     ranked_map = {row.code: row for row in ranked_rows}
-    normalized_gold = _normalize_candidates([str(item) for item in gold_candidates])
+    normalized_gold = [
+        code
+        for code in _normalize_candidates([str(item) for item in gold_candidates])
+        if code in label_map
+    ]
     merged: list[str] = []
-    # Mapped codes are allowed evidence and must survive shortlist truncation.
-    for code in normalized_gold + ranked_codes:
+    # Retrieval candidates lead; mapped codes are secondary evidence only.
+    for code in ranked_codes + normalized_gold:
         if code and code not in merged:
             merged.append(code)
     merged = merged[:shortlist_size]

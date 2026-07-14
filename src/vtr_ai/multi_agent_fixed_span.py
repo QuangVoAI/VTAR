@@ -279,10 +279,16 @@ class CandidateJudgeAgent:
             code = str(value).split(":", 1)[0].strip()
             if code in allowed and code not in mapped_codes:
                 mapped_codes.append(code)
-        if mapped_codes:
-            return CandidateJudgeResult(entity=entity, candidates=mapped_codes[:3])
-
-        selected_codes = list(dict.fromkeys(str(code) for code in semantic.candidates if code in allowed))
+        selected_codes = list(
+            dict.fromkeys(
+                [
+                    str(code)
+                    for code in semantic.candidates
+                    if code in allowed
+                ]
+                + mapped_codes
+            )
+        )
         if not selected_codes:
             return CandidateJudgeResult(entity=entity, candidates=self._fallback_from_shortlist(retrieval, entity_type))
 

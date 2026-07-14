@@ -30,7 +30,7 @@ class MultiAgentFixedSpanTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             agent.run(text, [{**entity, "position": [1, len(text)]}])
 
-    def test_mapped_candidates_are_preferred_as_allowed_evidence(self) -> None:
+    def test_mapped_candidates_do_not_bypass_semantic_judging(self) -> None:
         judge = CandidateJudgeAgent()
         retrieval = RetrievalResult(
             entity={
@@ -52,7 +52,7 @@ class MultiAgentFixedSpanTests(unittest.TestCase):
             raw_prediction={"assertions": [], "candidates": ["I10"]},
         )
         judged = judge.run(retrieval, assertion=None, semantic=semantic)
-        self.assertEqual(judged.candidates, ["I25.10", "I25.110"])
+        self.assertEqual(judged.candidates, ["I10"])
 
     def test_orchestrator_splits_assertion_and_semantic_roles(self) -> None:
         text = (
