@@ -151,6 +151,20 @@ build_standard_kb \
   --rxnorm_output /Users/springwang/Documents/VTR/src/vtr_ai/data/rxnorm_standard.json
 ```
 
+Có thể build trực tiếp từ workbook có hai cột `Mã` và tên nhãn. Đây là cách dùng
+khi không tải được gói RxNorm zip:
+
+```bash
+PYTHONPATH=src python -m vtr_ai.build_standard_kb \
+  --icd10_xlsx /path/to/ICD.xlsx \
+  --rxnorm_xlsx /path/to/RxNorm.xlsx \
+  --icd10_output src/vtr_ai/data/icd10_standard.json \
+  --rxnorm_output src/vtr_ai/data/rxnorm_standard.json
+```
+
+Builder nhóm các dòng trùng mã thành một record và giữ các tên còn lại trong
+`aliases`; không có input hoặc output Viettel nào được hard-code vào builder.
+
 Nguồn chính thống dùng để build:
 
 - ICD-10-CM code descriptions từ CDC/NCHS

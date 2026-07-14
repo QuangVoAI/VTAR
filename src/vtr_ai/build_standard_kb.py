@@ -6,6 +6,7 @@ import re
 import zipfile
 from collections import defaultdict
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 
 DEFAULT_ICD10_URL = (
@@ -14,6 +15,7 @@ DEFAULT_ICD10_URL = (
 )
 DEFAULT_RXNORM_URL = "https://download.nlm.nih.gov/umls/kss/rxnorm/RxNorm_full_prescribe_current.zip"
 RXNORM_TTYS = {"IN", "PIN", "BN", "SCD", "SBD", "SCDG", "SBDG", "GPCK", "BPCK"}
+XLSX_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 
 
 def _format_icd10cm_code(code: str) -> str:
@@ -106,6 +108,61 @@ def build_rxnorm_records_from_zip(zip_path: str | Path) -> list[dict[str, object
     return records
 
 
+def _xlsx_shared_strings(archive: zipfile.ZipFile) -> list[str]:
+    try:
+        root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
+    except KeyError:
+        return []
+    namespace = f"{{{XLSX_NS}}}"
+    return ["".join(node.text or "" for node in item.iter(namespace + "t")) for item in root.findall(namespace + "si")]
+
+
+def _xlsx_cell_value(cell: ET.Element, shared_strings: list[str]) -> str:
+    namespace = f"{{{XLSX_NS}}}"
+    cell_type = cell.attrib.get("t", "")
+    if cell_type == "inlineStr":
+        return "".join(node.text or "" for node in cell.iter(namespace + "t")).strip()
+    value = cell.find(namespace + "v")
+    raw = "" if value is None else (value.text or "").strip()
+    if cell_type == "s" and raw.isdigit() and int(raw) < len(shared_strings):
+        return shared_strings[int(raw)].strip()
+    return raw
+
+
+def _iter_xlsx_code_labels(xlsx_path: str | Path):
+    namespace = f"{{{XLSX_NS}}}"
+    with zipfile.ZipFile(xlsx_path) as archive:
+        shared_strings = _xlsx_shared_strings(archive)
+        with archive.open("xl/worksheets/sheet1.xml") as sheet:
+            for _, row in ET.iterparse(sheet, events=("end",)):
+                if row.tag != namespace + "row":
+                    continue
+                cells = row.findall(namespace + "c")
+                if len(cells) >= 2 and row.attrib.get("r") != "1":
+                    code = _xlsx_cell_value(cells[0], shared_strings)
+                    label = _xlsx_cell_value(cells[1], shared_strings)
+                    if code and label:
+                        yield code, label
+                row.clear()
+
+
+def build_records_from_xlsx(xlsx_path: str | Path, *, kind: str) -> list[dict[str, object]]:
+    grouped: dict[str, dict[str, object]] = {}
+    for raw_code, label in _iter_xlsx_code_labels(xlsx_path):
+        code = _format_icd10cm_code(raw_code) if kind == "icd10" else raw_code.strip()
+        current = grouped.get(code)
+        if current is None:
+            grouped[code] = {"code": code, "label": label.strip(), "aliases": []}
+            continue
+        if label.strip() != current["label"] and label.strip() not in current["aliases"]:
+            current["aliases"].append(label.strip())
+    records = list(grouped.values())
+    for record in records:
+        record["aliases"] = sorted(str(alias) for alias in record["aliases"] if alias != record["label"])
+    records.sort(key=lambda item: str(item["code"]))
+    return records
+
+
 def merge_seed_aliases(
     base_records: list[dict[str, object]],
     seed_path: str | Path | None,
@@ -178,6 +235,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Build standard ICD-10 / RxNorm knowledge-base files for the pipeline.")
     parser.add_argument("--icd10_zip", help=f"Official ICD-10-CM zip. Suggested source: {DEFAULT_ICD10_URL}")
     parser.add_argument("--rxnorm_zip", help=f"Official RxNorm Prescribable zip. Suggested source: {DEFAULT_RXNORM_URL}")
+    parser.add_argument("--icd10_xlsx", help="ICD workbook with columns Mã and Tên bệnh")
+    parser.add_argument("--rxnorm_xlsx", help="RxNorm workbook with columns Mã and Tên thuốc")
     parser.add_argument("--icd10_output", default="src/vtr_ai/data/icd10_standard.json")
     parser.add_argument("--rxnorm_output", default="src/vtr_ai/data/rxnorm_standard.json")
     parser.add_argument("--icd10_seed_aliases", help="Optional existing ICD JSON to merge in local aliases")
@@ -189,19 +248,27 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_arg_parser()
     args = parser.parse_args(argv)
 
-    if not args.icd10_zip and not args.rxnorm_zip:
-        parser.error("Provide at least one of --icd10_zip or --rxnorm_zip")
+    if not any((args.icd10_zip, args.rxnorm_zip, args.icd10_xlsx, args.rxnorm_xlsx)):
+        parser.error("Provide at least one zip or xlsx source")
 
     result: dict[str, object] = {}
-    if args.icd10_zip:
-        icd_records = build_icd10_records_from_zip(args.icd10_zip)
+    if args.icd10_zip or args.icd10_xlsx:
+        icd_records = (
+            build_icd10_records_from_zip(args.icd10_zip)
+            if args.icd10_zip
+            else build_records_from_xlsx(args.icd10_xlsx, kind="icd10")
+        )
         icd_records = merge_seed_aliases(icd_records, args.icd10_seed_aliases)
         write_records(icd_records, args.icd10_output)
         result["icd10_output"] = str(Path(args.icd10_output).resolve())
         result["icd10_records"] = len(icd_records)
 
-    if args.rxnorm_zip:
-        rx_records = build_rxnorm_records_from_zip(args.rxnorm_zip)
+    if args.rxnorm_zip or args.rxnorm_xlsx:
+        rx_records = (
+            build_rxnorm_records_from_zip(args.rxnorm_zip)
+            if args.rxnorm_zip
+            else build_records_from_xlsx(args.rxnorm_xlsx, kind="rxnorm")
+        )
         rx_records = merge_seed_aliases(rx_records, args.rxnorm_seed_aliases)
         write_records(rx_records, args.rxnorm_output)
         result["rxnorm_output"] = str(Path(args.rxnorm_output).resolve())

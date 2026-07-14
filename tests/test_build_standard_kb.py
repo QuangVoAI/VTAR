@@ -6,7 +6,13 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from vtr_ai.build_standard_kb import build_icd10_records_from_zip, build_rxnorm_records_from_zip, merge_seed_aliases, write_records
+from vtr_ai.build_standard_kb import (
+    build_icd10_records_from_zip,
+    build_records_from_xlsx,
+    build_rxnorm_records_from_zip,
+    merge_seed_aliases,
+    write_records,
+)
 
 
 class BuildStandardKbTests(unittest.TestCase):
@@ -50,6 +56,26 @@ class BuildStandardKbTests(unittest.TestCase):
             self.assertEqual(by_code["1191"]["label"], "aspirin 325 MG Oral Tablet")
             self.assertIn("aspirin 325 MG", by_code["1191"]["aliases"])
             self.assertEqual(by_code["6918"]["label"], "atenolol")
+
+    def test_build_records_from_xlsx_groups_aliases(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            xlsx_path = Path(tmp_dir) / "records.xlsx"
+            workbook_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <sheetData>
+    <row r="1"><c t="inlineStr"><is><t>Ma</t></is></c><c t="inlineStr"><is><t>Ten</t></is></c></row>
+    <row r="2"><c t="inlineStr"><is><t>E119</t></is></c><c t="inlineStr"><is><t>Type 2 diabetes</t></is></c></row>
+    <row r="3"><c t="inlineStr"><is><t>E119</t></is></c><c t="inlineStr"><is><t>Diabetes type 2</t></is></c></row>
+  </sheetData>
+</workbook>"""
+            with zipfile.ZipFile(xlsx_path, "w") as archive:
+                archive.writestr("xl/worksheets/sheet1.xml", workbook_xml)
+            records = build_records_from_xlsx(xlsx_path, kind="icd10")
+            self.assertEqual(records, [{
+                "code": "E11.9",
+                "label": "Type 2 diabetes",
+                "aliases": ["Diabetes type 2"],
+            }])
 
     def test_write_records_outputs_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

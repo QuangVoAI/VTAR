@@ -1,0 +1,28 @@
+{
+  "icd10": {
+    "path": "/Users/springwang/Documents/VTR/src/vtr_ai/data/icd10_standard.json",
+    "kind": "icd10",
+    "records": 13189,
+    "unique_codes": 13189,
+    "records_with_aliases": 1669,
+    "total_aliases": 1686,
+    "average_aliases": 0.1278,
+    "numeric_code_ratio": 0.0,
+    "duplicate_codes": [],
+    "invalid_rows": []
+  },
+  "rxnorm": {
+    "path": "/Users/springwang/Documents/VTR/src/vtr_ai/data/rxnorm_standard.json",
+    "kind": "rxnorm",
+    "records": 412701,
+    "unique_codes": 412701,
+    "records_with_aliases": 158424,
+    "total_aliases": 598565,
+    "average_aliases": 1.4504,
+    "numeric_code_ratio": 1.0,
+    "duplicate_codes": [],
+    "invalid_rows": []
+  },
+  "status": "ok",
+  "failures": []
+}
