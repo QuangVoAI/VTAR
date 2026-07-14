@@ -158,7 +158,9 @@ def _gather_candidate_pool(
     )
     by_code = {record.code: record for record in records}
     indexed_pool = [by_code[candidate.code] for candidate in indexed if candidate.code in by_code]
-    embedding_base = records
+    # The indexed lexical pool bounds embedding work for large ICD-10/RxNorm KBs.
+    # It still falls back to the ranked pool when no exact alias exists.
+    embedding_base = indexed_pool or exact_pool or records
     embedding_pool = [
         by_code[item.code]
         for item in rank_by_embedding(mention, embedding_base, top_k=max(pool_size, 30))

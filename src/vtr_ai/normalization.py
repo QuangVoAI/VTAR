@@ -10,6 +10,7 @@ from .config import MatchingConfig
 from .knowledge_base import KnowledgeBase, KnowledgeRecord
 from .section_parser import find_enclosing_clause
 from .schemas import Document, Entity
+from .semantic_embedding_retriever import rank_by_embedding
 
 
 STRENGTH_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*(mg/ml|mcg/ml|mg|mcg|g|ml)\b", re.IGNORECASE)
@@ -23,6 +24,7 @@ class MappingCandidateScore:
     lexical_score: float
     semantic_score: float
     structured_score: float | None
+    embedding_score: float = 0.0
     strength_mismatch: bool = False
     final_score: float = 0.0
 
@@ -275,15 +277,23 @@ def _score_mapping_candidates(
     clause_kind: str | None,
     knowledge_base: KnowledgeBase,
 ) -> list[MappingCandidateScore]:
-    base_ranked = rank_candidates_indexed(query, records, config, knowledge_base, entity_type)
+    pool_config = MatchingConfig(
+        max_candidates=max(config.max_candidates * 10, 50),
+        min_confidence=0.0,
+    )
+    base_ranked = rank_candidates_indexed(query, records, pool_config, knowledge_base, entity_type)
     allowed_codes = {candidate.code for candidate in base_ranked}
+    candidate_records = [record for record in records if not allowed_codes or record.code in allowed_codes]
+    embedding_by_code = {
+        item.code: item
+        for item in rank_by_embedding(query, candidate_records, top_k=len(candidate_records))
+    }
     rescored: list[MappingCandidateScore] = []
-    for record in records:
-        if allowed_codes and record.code not in allowed_codes:
-            continue
+    for record in candidate_records:
         lexical_score = score_record(query, record)
         best_alias = _best_normalized_alias(record, query)
-        semantic_score = _semantic_similarity(query, best_alias)
+        embedding_match = embedding_by_code.get(record.code)
+        semantic_score = embedding_match.score if embedding_match is not None else 0.0
         structured_score, strength_mismatch = _structured_match_score(query, best_alias, entity_type)
 
         final_score = lexical_score * 0.45 + semantic_score * 0.45
@@ -298,6 +308,7 @@ def _score_mapping_candidates(
                     lexical_score=lexical_score,
                     semantic_score=semantic_score,
                     structured_score=structured_score,
+                    embedding_score=semantic_score,
                     strength_mismatch=strength_mismatch,
                     final_score=final_score,
                 )

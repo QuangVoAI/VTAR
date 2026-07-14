@@ -1,0 +1,43 @@
+{
+  "files": 100,
+  "entity_span": {
+    "true_positive": 774,
+    "false_positive": 957,
+    "false_negative": 82,
+    "precision": 0.44714038128249567,
+    "recall": 0.9042056074766355,
+    "f1": 0.5983764978739853
+  },
+  "entity_span_type": {
+    "true_positive": 774,
+    "false_positive": 961,
+    "false_negative": 82,
+    "precision": 0.44610951008645533,
+    "recall": 0.9042056074766355,
+    "f1": 0.5974527209571594
+  },
+  "entity_record": {
+    "true_positive": 538,
+    "false_positive": 1197,
+    "false_negative": 318,
+    "precision": 0.3100864553314121,
+    "recall": 0.6285046728971962,
+    "f1": 0.4152836742570436
+  },
+  "assertions": {
+    "true_positive": 174,
+    "false_positive": 299,
+    "false_negative": 54,
+    "precision": 0.3678646934460888,
+    "recall": 0.7631578947368421,
+    "f1": 0.49643366619115553
+  },
+  "candidates": {
+    "true_positive": 246,
+    "false_positive": 326,
+    "false_negative": 66,
+    "precision": 0.43006993006993005,
+    "recall": 0.7884615384615384,
+    "f1": 0.5565610859728507
+  }
+}

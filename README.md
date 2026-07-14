@@ -180,6 +180,30 @@ Lệnh này hữu ích để xác nhận:
 
 ## Đánh giá offline
 
+### Audit knowledge base
+
+Trước khi inference, kiểm tra KB đang trỏ đúng bản chuẩn và không bị build từ file RxNorm rút gọn:
+
+```bash
+audit_knowledge_base \
+  --icd10 src/vtr_ai/data/icd10_standard.json \
+  --rxnorm src/vtr_ai/data/rxnorm_standard.json \
+  --output reports/kb_audit_standard.json
+```
+
+RxNorm phải được build từ `RXNCONSO.RRF` của gói `RxNorm_full_prescribe_current.zip`; không dùng file sample 33 mã.
+
+Alias ICD-10 chỉ được bootstrap từ bản annotation có `gold_entities` đã duyệt. Script sẽ từ chối file chỉ có `predicted_entities`:
+
+```bash
+build_icd10_alias_seed \
+  --annotations reports/bootstrap_annotations_reviewed.jsonl \
+  --kb src/vtr_ai/data/icd10_standard.json \
+  --output src/vtr_ai/data/icd10_reviewed_aliases.json
+```
+
+Sau đó truyền seed vào `build_standard_kb` bằng `--icd10_seed_aliases`.
+
 Khi đã có thư mục nhãn chuẩn `gold_dir` theo đúng format Viettel (`*.json` song song với `input/*.txt`), có thể đo nhanh các chỉ số chính:
 
 ```bash

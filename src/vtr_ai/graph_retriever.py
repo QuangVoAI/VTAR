@@ -39,7 +39,14 @@ class GraphRetriever:
             for neighbor in self.index.diagnosis_nodes[code].neighbors:
                 support[neighbor] = max(support.get(neighbor, 0.0), 0.35)
         if not support:
-            for code, node in self.index.diagnosis_nodes.items():
+            query_tokens = set(query.split())
+            pool_codes = {
+                code
+                for token in query_tokens
+                for code in self.index.diagnosis_token_to_codes.get(token, set())
+            }
+            for code in pool_codes:
+                node = self.index.diagnosis_nodes[code]
                 similarity = max(
                     SequenceMatcher(None, query, _normalize(alias)).ratio()
                     for alias in [node.label, *node.aliases]
@@ -61,7 +68,14 @@ class GraphRetriever:
                 support[neighbor] = max(support.get(neighbor, 0.0), 0.45)
         if not support:
             query_ingredient = _normalize(_strip_strength(entity.text))
-            for code, node in self.index.drug_nodes.items():
+            query_tokens = set(query_ingredient.split())
+            pool_codes = {
+                code
+                for token in query_tokens
+                for code in self.index.drug_token_to_codes.get(token, set())
+            }
+            for code in pool_codes:
+                node = self.index.drug_nodes[code]
                 aliases = [node.label, *node.aliases]
                 alias_scores = [SequenceMatcher(None, query, _normalize(alias)).ratio() for alias in aliases]
                 ingredient_scores = [SequenceMatcher(None, query_ingredient, _normalize(_strip_strength(alias))).ratio() for alias in aliases]

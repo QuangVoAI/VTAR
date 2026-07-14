@@ -1,6 +1,6 @@
 knowledge_base:
-  icd10_path: src/vtr_ai/data/icd10_sample.json
-  rxnorm_path: src/vtr_ai/data/rxnorm_sample.json
+  icd10_path: src/vtr_ai/data/icd10_standard.json
+  rxnorm_path: src/vtr_ai/data/rxnorm_standard.json
   abbreviations_path: src/vtr_ai/data/vi_abbreviations.json
 
 matching:

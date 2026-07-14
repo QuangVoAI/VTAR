@@ -12118,7 +12118,11 @@
   {
     "code": "D12.8",
     "label": "Benign neoplasm of rectum",
-    "aliases": []
+    "aliases": [
+      "u tuyến",
+      "u tuyến lành trực tràng",
+      "u tuyến trực tràng"
+    ]
   },
   {
     "code": "D12.9",
@@ -15461,7 +15465,12 @@
   {
     "code": "D86.85",
     "label": "Sarcoid myocarditis",
-    "aliases": []
+    "aliases": [
+      "sacoit tổn thương chủ yếu tại tim",
+      "sarcoid tim",
+      "sarcoid tổn thương chủ yếu tại tim",
+      "u sacoit tổn thương chủ yếu tại tim"
+    ]
   },
   {
     "code": "D86.86",
@@ -52133,7 +52142,9 @@
   {
     "code": "I99.9",
     "label": "Unspecified disorder of circulatory system",
-    "aliases": []
+    "aliases": [
+      "bệnh mạch máu"
+    ]
   },
   {
     "code": "J00",
