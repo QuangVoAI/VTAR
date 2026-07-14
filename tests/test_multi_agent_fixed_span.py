@@ -5,6 +5,7 @@ from pathlib import Path
 
 from vtr_ai.multi_agent_fixed_span import (
     CandidateJudgeAgent,
+    FixedSpanAgent,
     FixedSpanMultiAgentOrchestrator,
     RetrievalResult,
     SemanticSelectionResult,
@@ -15,6 +16,44 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class MultiAgentFixedSpanTests(unittest.TestCase):
+    def test_fixed_span_agent_rejects_offset_changes(self) -> None:
+        agent = FixedSpanAgent()
+        text = "Tăng huyết áp"
+        entity = {
+            "text": text,
+            "position": [0, len(text)],
+            "type": "CHẨN_ĐOÁN",
+            "assertions": [],
+            "candidates": [],
+        }
+        self.assertEqual(agent.run(text, [entity]), [entity])
+        with self.assertRaises(ValueError):
+            agent.run(text, [{**entity, "position": [1, len(text)]}])
+
+    def test_mapped_candidates_are_preferred_as_allowed_evidence(self) -> None:
+        judge = CandidateJudgeAgent()
+        retrieval = RetrievalResult(
+            entity={
+                "text": "bệnh động mạch vành",
+                "type": "CHẨN_ĐOÁN",
+                "candidates": ["I25.10", "I25.110"],
+            },
+            example=None,
+            shortlist_codes=["I25.10", "I25.110", "I10"],
+            shortlist=[
+                {"code": "I25.10", "score": 0.8, "source": "mapped"},
+                {"code": "I25.110", "score": 0.7, "source": "mapped"},
+                {"code": "I10", "score": 1.1, "source": "exact"},
+            ],
+        )
+        semantic = SemanticSelectionResult(
+            entity=retrieval.entity,
+            candidates=["I10"],
+            raw_prediction={"assertions": [], "candidates": ["I10"]},
+        )
+        judged = judge.run(retrieval, assertion=None, semantic=semantic)
+        self.assertEqual(judged.candidates, ["I25.10", "I25.110"])
+
     def test_orchestrator_splits_assertion_and_semantic_roles(self) -> None:
         text = (
             "Tiền sử tăng huyết áp.\n"

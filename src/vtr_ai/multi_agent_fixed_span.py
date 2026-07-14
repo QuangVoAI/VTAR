@@ -31,6 +31,28 @@ class RetrievalResult:
     shortlist: list[dict]
 
 
+class FixedSpanAgent:
+    """Validate fixed spans without changing their text, type, or offsets."""
+
+    def run(self, raw_text: str, entities: list[dict]) -> list[dict]:
+        validated: list[dict] = []
+        for entity in entities:
+            position = entity.get("position")
+            if not isinstance(position, list) or len(position) != 2:
+                raise ValueError(f"Invalid fixed span position: {position!r}")
+            start, end = position
+            if not isinstance(start, int) or not isinstance(end, int):
+                raise ValueError(f"Fixed span offsets must be integers: {position!r}")
+            if start < 0 or end < start or end > len(raw_text):
+                raise ValueError(f"Fixed span is out of bounds: {position!r}")
+            if raw_text[start:end] != str(entity.get("text", "")):
+                raise ValueError(
+                    f"Fixed span mismatch for {entity.get('text')!r}: {position!r}"
+                )
+            validated.append(dict(entity))
+        return validated
+
+
 @dataclass(slots=True)
 class AssertionResult:
     entity: dict
@@ -308,11 +330,13 @@ class FixedSpanMultiAgentOrchestrator:
         self.semantic_agent = SemanticSelectionAgent(generator)
         self.candidate_judge_agent = CandidateJudgeAgent()
         self.merge_agent = MergeAgent()
+        self.span_agent = FixedSpanAgent()
 
     def process_entities(self, raw_text: str, file_name: str, entities: list[dict]) -> list[dict]:
         document = self.assertion_agent.build_document_once(raw_text)
         merged_entities: list[dict] = []
-        for entity in entities:
+        fixed_entities = self.span_agent.run(raw_text, entities)
+        for entity in fixed_entities:
             retrieval = self.retrieval_agent.run(raw_text=raw_text, file_name=file_name, entity=entity)
             assertion = self.assertion_agent.run(document, entity)
             semantic = self.semantic_agent.run(retrieval, assertion)

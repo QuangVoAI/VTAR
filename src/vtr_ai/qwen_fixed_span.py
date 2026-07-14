@@ -104,8 +104,10 @@ def _build_shortlist(
     )
     ranked_codes = [row.code for row in ranked_rows]
     ranked_map = {row.code: row for row in ranked_rows}
+    normalized_gold = _normalize_candidates([str(item) for item in gold_candidates])
     merged: list[str] = []
-    for code in ranked_codes + gold_candidates:
+    # Mapped codes are allowed evidence and must survive shortlist truncation.
+    for code in normalized_gold + ranked_codes:
         if code and code not in merged:
             merged.append(code)
     merged = merged[:shortlist_size]
@@ -114,9 +116,9 @@ def _build_shortlist(
         {
             "code": code,
             "label": label_map.get(code, "") or (ranked_map.get(code).matched_alias if code in ranked_map else ""),
-            "is_gold": code in gold_candidates,
+            "is_gold": code in normalized_gold,
             "score": round(ranked_map.get(code).score, 4) if code in ranked_map else 0.0,
-            "source": ranked_map.get(code).source if code in ranked_map else "gold",
+            "source": ranked_map.get(code).source if code in ranked_map else "mapped",
             "matched_alias": ranked_map.get(code).matched_alias if code in ranked_map else label_map.get(code, ""),
         }
         for code in merged

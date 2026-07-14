@@ -64,7 +64,9 @@ def _clean_drug_span(text: str, start: int, end: int) -> tuple[int, int]:
     )
     candidate = re.sub(r"^(?:thêm)\s+", "", candidate, flags=re.IGNORECASE)
     candidate = re.sub(r"^(?:(?:iv|po|im)\s+)+", "", candidate, flags=re.IGNORECASE)
-    candidate = re.sub(r"\b(?:x\s*\d+|po|iv|im|bid|tid|qid|daily|once|nebs?|nebulizer)\b.*$", "", candidate, flags=re.IGNORECASE)
+    # Keep dose-count text such as "x 1" in the fixed mention; normalization
+    # removes regimen noise only when producing ontology candidates.
+    candidate = re.sub(r"\b(?:po|iv|im|bid|tid|qid|daily|once|nebs?|nebulizer)\b.*$", "", candidate, flags=re.IGNORECASE)
     candidate = re.sub(r"^(?:[-*]\s*)+", "", candidate)
     leading_trim = raw_candidate.lower().find(candidate.lower()) if candidate else 0
     if leading_trim < 0:
