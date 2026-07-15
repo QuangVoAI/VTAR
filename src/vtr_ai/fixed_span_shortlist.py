@@ -13,6 +13,10 @@ from .semantic_embedding_retriever import rank_by_embedding
 
 STRENGTH_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*(mg/ml|mcg/ml|mg|mcg|g|ml)\b", re.IGNORECASE)
 ROUTE_PATTERN = re.compile(r"\b(po|iv|im|sc|subq|bid|tid|qid|daily|once|prn|nebs?|nebulizer)\b", re.IGNORECASE)
+PRODUCT_LABEL_PATTERN = re.compile(
+    r"(?:containing product|oral|tablet|capsule|solution|injection|\[|\b\d+(?:[.,]\d+)?\s*(?:mg|mcg|g|ml)\b)",
+    re.IGNORECASE,
+)
 
 
 @dataclass(slots=True)
@@ -111,6 +115,20 @@ def _structured_match_score(query: str, alias: str, entity_type: str) -> tuple[f
         score += 0.05
 
     return max(0.0, min(1.0, score)), mismatch
+
+
+def _bare_drug_preference_score(query: str, record: KnowledgeRecord) -> float:
+    """Prefer mapped ingredient aliases over product concepts for bare drug mentions."""
+    if _extract_strength_signature(query) or ROUTE_PATTERN.search(query.lower()):
+        return 0.0
+
+    query_norm = _normalize_cache_key(query)
+    label_norm = _normalize_cache_key(record.label)
+    alias_hit = any(_normalize_cache_key(alias) == query_norm for alias in record.aliases)
+    bonus = 0.12 if alias_hit and query_norm != label_norm else 0.0
+    if PRODUCT_LABEL_PATTERN.search(record.label):
+        bonus -= 0.10
+    return bonus
 
 
 def _exact_match_codes(query: str, records: list[KnowledgeRecord], entity_type: str) -> list[str]:
@@ -222,6 +240,8 @@ def rank_fixed_span_shortlist_records(
             final_score += 0.35
         if entity_type == "THUỐC" and structured_mismatch:
             final_score -= 0.12
+        if entity_type == "THUỐC":
+            final_score += _bare_drug_preference_score(mention, record)
         if record.code in exact_codes:
             source = "exact"
         else:
