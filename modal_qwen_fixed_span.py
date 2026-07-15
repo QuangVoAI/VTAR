@@ -177,10 +177,15 @@ def remote_infer(
     shortlist_min_confidence: float = 0.1,
     max_length: int = 1536,
     max_new_tokens: int = 96,
+    embedding_model: str = "",
 ) -> str:
     import sys
 
     _login_hf_if_present()
+    if embedding_model:
+        os.environ["VTR_EMBEDDING_MODEL"] = embedding_model
+    else:
+        os.environ.pop("VTR_EMBEDDING_MODEL", None)
     sys.path.insert(0, f"{REMOTE_ROOT}/src")
     from vtr_ai.infer_qwen_fixed_span import main as infer_main
 
@@ -286,11 +291,13 @@ def infer(
     adapter_path: str = "SpringWang08/qwen25-7b-fixed-span-viettel-lora",
     output_subdir: str = "viettel_qwen_fixed_span_output",
     max_new_tokens: int = 96,
+    embedding_model: str = "",
 ) -> None:
     remote_dir = remote_infer.remote(
         adapter_path=adapter_path,
         output_subdir=output_subdir,
         max_new_tokens=max_new_tokens,
+        embedding_model=embedding_model,
     )
     print(json.dumps({"status": "ok", "remote_output_dir": remote_dir}, ensure_ascii=False, indent=2))
     print(
@@ -303,6 +310,7 @@ def infer_raw_68_100(
     adapter_path: str = "SpringWang08/qwen25-7b-fixed-span-viettel-lora",
     output_subdir: str = "viettel_qwen_fixed_span_raw_68_100_output",
     max_new_tokens: int = 96,
+    embedding_model: str = "",
 ) -> None:
     remote_dir = remote_infer.remote(
         input_dir=f"{REMOTE_ROOT}/tmp/raw_68_100_input",
@@ -310,6 +318,7 @@ def infer_raw_68_100(
         adapter_path=adapter_path,
         output_subdir=output_subdir,
         max_new_tokens=max_new_tokens,
+        embedding_model=embedding_model,
     )
     print(json.dumps({"status": "ok", "remote_output_dir": remote_dir}, ensure_ascii=False, indent=2))
     print(
@@ -322,6 +331,7 @@ def infer_raw_1_100(
     adapter_path: str = "SpringWang08/qwen25-7b-fixed-span-viettel-lora",
     output_subdir: str = "viettel_qwen_fixed_span_raw_1_100_output",
     max_new_tokens: int = 96,
+    embedding_model: str = "",
 ) -> None:
     remote_dir = remote_infer.remote(
         input_dir=f"{REMOTE_ROOT}/tmp/raw_1_100_input",
@@ -329,6 +339,7 @@ def infer_raw_1_100(
         adapter_path=adapter_path,
         output_subdir=output_subdir,
         max_new_tokens=max_new_tokens,
+        embedding_model=embedding_model,
     )
     print(json.dumps({"status": "ok", "remote_output_dir": remote_dir}, ensure_ascii=False, indent=2))
     print(
