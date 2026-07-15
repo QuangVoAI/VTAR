@@ -104,6 +104,7 @@ def _build_shortlist(
     )
     ranked_codes = [row.code for row in ranked_rows]
     ranked_map = {row.code: row for row in ranked_rows}
+    label_map = label_maps["icd10"] if entity_type == "CHẨN_ĐOÁN" else label_maps["rxnorm"]
     normalized_gold = [
         code
         for code in _normalize_candidates([str(item) for item in gold_candidates])
@@ -115,7 +116,6 @@ def _build_shortlist(
         if code and code not in merged:
             merged.append(code)
     merged = merged[:shortlist_size]
-    label_map = label_maps["icd10"] if entity_type == "CHẨN_ĐOÁN" else label_maps["rxnorm"]
     return [
         {
             "code": code,
