@@ -58,6 +58,12 @@ def build_rxnorm_records_from_zip(zip_path: str | Path) -> list[dict[str, object
         if conso_name is None:
             raise ValueError(f"Could not find RXNCONSO.RRF in {path}")
         rows = archive.read(conso_name).decode("utf-8", errors="replace").splitlines()
+        rel_name = next((name for name in archive.namelist() if name.endswith("RXNREL.RRF")), None)
+        relation_rows = (
+            archive.read(rel_name).decode("utf-8", errors="replace").splitlines()
+            if rel_name is not None
+            else []
+        )
 
     grouped: dict[str, dict[str, object]] = {}
     aliases_by_rxcui: dict[str, set[str]] = defaultdict(set)
@@ -90,9 +96,29 @@ def build_rxnorm_records_from_zip(zip_path: str | Path) -> list[dict[str, object
                 "label": normalized_alias,
                 "tty": tty,
                 "canonical_code": code,
+                "ingredient_codes": set(),
             },
         )
         grouped[rxcui]["label"] = _prefer_label(str(grouped[rxcui]["label"]), normalized_alias, tty)
+
+    # RXNREL links clinical/ branded products to ingredient concepts without
+    # relying on challenge-specific code lists. Keep only the generic
+    # ingredient relation and normalize both directions for release variants.
+    for line in relation_rows:
+        fields = line.split("|")
+        if len(fields) < 8:
+            continue
+        left = fields[0].strip()
+        relation = fields[7].strip().lower()
+        right = fields[4].strip()
+        if not left or not right:
+            continue
+        if relation in {"has_ingredient", "has_precise_ingredient"}:
+            if left in grouped and right in grouped:
+                grouped[left]["ingredient_codes"].add(right)
+        elif relation in {"ingredient_of", "precise_ingredient_of"}:
+            if right in grouped and left in grouped:
+                grouped[right]["ingredient_codes"].add(left)
 
     records: list[dict[str, object]] = []
     for rxcui, payload in grouped.items():
@@ -102,6 +128,8 @@ def build_rxnorm_records_from_zip(zip_path: str | Path) -> list[dict[str, object
                 "code": payload["code"],
                 "label": payload["label"],
                 "aliases": aliases,
+                "tty": payload["tty"],
+                "ingredient_codes": sorted(payload["ingredient_codes"]),
             }
         )
     records.sort(key=lambda item: item["code"])
@@ -190,6 +218,7 @@ def merge_seed_aliases(
                 "code": code,
                 "label": label,
                 "aliases": sorted(alias for alias in aliases if alias and alias != label),
+                **({key: record[key] for key in ("tty", "ingredient_codes") if key in record}),
             }
         )
 
@@ -201,6 +230,7 @@ def merge_seed_aliases(
                 "code": code,
                 "label": str(seed["label"]),
                 "aliases": sorted(str(alias) for alias in seed.get("aliases", []) if str(alias)),
+                **({key: seed[key] for key in ("tty", "ingredient_codes") if key in seed}),
             }
         )
 

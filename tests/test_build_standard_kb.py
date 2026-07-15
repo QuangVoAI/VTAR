@@ -57,6 +57,23 @@ class BuildStandardKbTests(unittest.TestCase):
             self.assertIn("aspirin 325 MG", by_code["1191"]["aliases"])
             self.assertEqual(by_code["6918"]["label"], "atenolol")
 
+    def test_build_rxnorm_records_keeps_tty_and_ingredient_relation(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            zip_path = tmp_path / "rxnorm-rel.zip"
+            ingredient = self._rrf_row("100", "IN", "100", "aspirin")
+            product = self._rrf_row("200", "SCD", "200", "aspirin 325 MG Oral Tablet")
+            relation_fields = ["200", "", "", "", "100", "", "", "has_ingredient"]
+            relation = "|".join(relation_fields + [""] * 8) + "|\n"
+            with zipfile.ZipFile(zip_path, "w") as archive:
+                archive.writestr("rrf/RXNCONSO.RRF", ingredient + product)
+                archive.writestr("rrf/RXNREL.RRF", relation)
+            records = build_rxnorm_records_from_zip(zip_path)
+            by_code = {item["code"]: item for item in records}
+            self.assertEqual(by_code["100"]["tty"], "IN")
+            self.assertEqual(by_code["200"]["tty"], "SCD")
+            self.assertEqual(by_code["200"]["ingredient_codes"], ["100"])
+
     def test_build_records_from_xlsx_groups_aliases(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             xlsx_path = Path(tmp_dir) / "records.xlsx"

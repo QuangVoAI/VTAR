@@ -118,14 +118,27 @@ def _structured_match_score(query: str, alias: str, entity_type: str) -> tuple[f
 
 
 def _bare_drug_preference_score(query: str, record: KnowledgeRecord) -> float:
-    """Prefer mapped ingredient aliases over product concepts for bare drug mentions."""
+    """Use RxNorm TTY as a generic ingredient/product prior when available."""
     if _extract_strength_signature(query) or ROUTE_PATTERN.search(query.lower()):
+        if record.tty in {"SCD", "SBD"}:
+            return 0.08
+        if record.tty in {"IN", "PIN"}:
+            return 0.02
         return 0.0
 
     query_norm = _normalize_cache_key(query)
     label_norm = _normalize_cache_key(record.label)
     alias_hit = any(_normalize_cache_key(alias) == query_norm for alias in record.aliases)
     bonus = 0.12 if alias_hit and query_norm != label_norm else 0.0
+    if record.tty in {"IN", "PIN"}:
+        bonus += 0.12
+    elif record.tty == "BN":
+        bonus += 0.03
+    elif record.tty in {"SCD", "SBD", "SCDG", "SBDG", "GPCK", "BPCK"}:
+        bonus -= 0.08
+    elif record.tty is None and label_norm == query_norm:
+        # Preserve the legacy behavior for XLSX/old JSON KBs without TTY.
+        bonus -= 0.10
     if PRODUCT_LABEL_PATTERN.search(record.label):
         bonus -= 0.10
     return bonus

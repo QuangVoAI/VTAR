@@ -14,6 +14,8 @@ class KnowledgeRecord:
     code: str
     label: str
     aliases: list[str]
+    tty: str | None = None
+    ingredient_codes: list[str] | None = None
 
     @property
     def searchable_text(self) -> str:
@@ -55,6 +57,8 @@ def _load_records(path: Path) -> list[KnowledgeRecord]:
             code=item["code"],
             label=item["label"],
             aliases=item.get("aliases", []),
+            tty=item.get("tty"),
+            ingredient_codes=item.get("ingredient_codes"),
         )
         for item in data
     ]
