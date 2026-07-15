@@ -158,7 +158,7 @@ def remote_train(
 
 @app.function(
     image=image,
-    gpu="L4",
+    gpu="A100-40GB",
     cpu=8,
     memory=32768,
     timeout=60 * 60 * 6,
