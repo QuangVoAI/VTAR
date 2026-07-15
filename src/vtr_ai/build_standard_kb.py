@@ -13,7 +13,7 @@ DEFAULT_ICD10_URL = (
     "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Publications/ICD10CM/2026/"
     "icd10cm-Code%20Descriptions-2026.zip"
 )
-DEFAULT_RXNORM_URL = "https://download.nlm.nih.gov/umls/kss/rxnorm/RxNorm_full_prescribe_current.zip"
+DEFAULT_RXNORM_URL = "https://download.nlm.nih.gov/umls/kss/rxnorm/RxNorm_full_current.zip"
 RXNORM_TTYS = {"IN", "PIN", "BN", "SCD", "SBD", "SCDG", "SBDG", "GPCK", "BPCK"}
 XLSX_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 
@@ -27,7 +27,12 @@ def _format_icd10cm_code(code: str) -> str:
 
 def build_icd10_records_from_zip(zip_path: str | Path) -> list[dict[str, object]]:
     path = Path(zip_path)
-    with zipfile.ZipFile(path) as archive:
+    try:
+        archive_context = zipfile.ZipFile(path)
+    except zipfile.BadZipFile as exc:
+        raise ValueError(f"{path} is not a valid zip file. Re-download the official release file.") from exc
+
+    with archive_context as archive:
         member_name = next(
             (name for name in archive.namelist() if name.lower().startswith("icd10cm-codes-") and name.lower().endswith(".txt")),
             None,
@@ -53,7 +58,18 @@ def build_icd10_records_from_zip(zip_path: str | Path) -> list[dict[str, object]
 
 def build_rxnorm_records_from_zip(zip_path: str | Path) -> list[dict[str, object]]:
     path = Path(zip_path)
-    with zipfile.ZipFile(path) as archive:
+    try:
+        archive_context = zipfile.ZipFile(path)
+    except zipfile.BadZipFile as exc:
+        prefix = path.read_text(encoding="utf-8", errors="ignore")[:200] if path.exists() else ""
+        if "<html" in prefix.lower() or "uts/login" in prefix.lower():
+            raise ValueError(
+                f"{path} is an HTML login/error page, not a RxNorm zip. "
+                "Download RxNorm through the UTS Download API with an apiKey."
+            ) from exc
+        raise ValueError(f"{path} is not a valid zip file. Re-download the official RxNorm release file.") from exc
+
+    with archive_context as archive:
         conso_name = next((name for name in archive.namelist() if name.endswith("RXNCONSO.RRF")), None)
         if conso_name is None:
             raise ValueError(f"Could not find RXNCONSO.RRF in {path}")
@@ -263,8 +279,8 @@ def write_records(records: list[dict[str, object]], output_path: str | Path) -> 
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Build standard ICD-10 / RxNorm knowledge-base files for the pipeline.")
-    parser.add_argument("--icd10_zip", help=f"Official ICD-10-CM zip. Suggested source: {DEFAULT_ICD10_URL}")
-    parser.add_argument("--rxnorm_zip", help=f"Official RxNorm Prescribable zip. Suggested source: {DEFAULT_RXNORM_URL}")
+    parser.add_argument("--icd10_zip", help=f"Official ICD-10-CM zip. Suggested source: {DEFAULT_ICD10_URL}".replace("%", "%%"))
+    parser.add_argument("--rxnorm_zip", help=f"Official RxNorm full monthly zip. Suggested source: {DEFAULT_RXNORM_URL}")
     parser.add_argument("--icd10_xlsx", help="ICD workbook with columns Mã and Tên bệnh")
     parser.add_argument("--rxnorm_xlsx", help="RxNorm workbook with columns Mã and Tên thuốc")
     parser.add_argument("--icd10_output", default="src/vtr_ai/data/icd10_standard.json")
@@ -283,22 +299,28 @@ def main(argv: list[str] | None = None) -> int:
 
     result: dict[str, object] = {}
     if args.icd10_zip or args.icd10_xlsx:
-        icd_records = (
-            build_icd10_records_from_zip(args.icd10_zip)
-            if args.icd10_zip
-            else build_records_from_xlsx(args.icd10_xlsx, kind="icd10")
-        )
+        try:
+            icd_records = (
+                build_icd10_records_from_zip(args.icd10_zip)
+                if args.icd10_zip
+                else build_records_from_xlsx(args.icd10_xlsx, kind="icd10")
+            )
+        except ValueError as exc:
+            parser.exit(2, f"error: {exc}\n")
         icd_records = merge_seed_aliases(icd_records, args.icd10_seed_aliases)
         write_records(icd_records, args.icd10_output)
         result["icd10_output"] = str(Path(args.icd10_output).resolve())
         result["icd10_records"] = len(icd_records)
 
     if args.rxnorm_zip or args.rxnorm_xlsx:
-        rx_records = (
-            build_rxnorm_records_from_zip(args.rxnorm_zip)
-            if args.rxnorm_zip
-            else build_records_from_xlsx(args.rxnorm_xlsx, kind="rxnorm")
-        )
+        try:
+            rx_records = (
+                build_rxnorm_records_from_zip(args.rxnorm_zip)
+                if args.rxnorm_zip
+                else build_records_from_xlsx(args.rxnorm_xlsx, kind="rxnorm")
+            )
+        except ValueError as exc:
+            parser.exit(2, f"error: {exc}\n")
         rx_records = merge_seed_aliases(rx_records, args.rxnorm_seed_aliases)
         write_records(rx_records, args.rxnorm_output)
         result["rxnorm_output"] = str(Path(args.rxnorm_output).resolve())
